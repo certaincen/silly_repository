@@ -1,6 +1,9 @@
 package hit.edu.Bean;
 
 public class Material implements Comparable<Material>{
+	//public final static int LFL = 1;
+//	public final static int FOQ = 2;
+	//public final static int POQ = 3;
 	private String Name;
 	public String getName() {
 		return Name;
@@ -12,6 +15,8 @@ public class Material implements Comparable<Material>{
 	private int ST;
 	private int SS;
 	private int LLC;
+
+	
 	public int getST() {
 		return ST;
 	}
@@ -30,11 +35,16 @@ public class Material implements Comparable<Material>{
 	public void setLLC(int lLC) {
 		LLC = lLC;
 	}
-	public String getLSR() {
+	public int getLSR() {
 		return LSR;
 	}
-	public void setLSR(String lSR) {
-		LSR = lSR;
+	public void setLSR(String lsr) {
+		if (lsr.equals("LFL"))
+		LSR = 1;
+		if (lsr.equals("FOQ"))
+			LSR = 2;
+		if (lsr.equals("POQ"))
+			LSR = 3;
 	}
 	public int getLS() {
 		return LS;
@@ -42,7 +52,7 @@ public class Material implements Comparable<Material>{
 	public void setLS(int lS) {
 		LS = lS;
 	}
-	private String LSR;
+	private int LSR;
 	private int LS;
 	public int getLT() {
 		return LT;

@@ -2,24 +2,35 @@ package hit.edu.Entity;
 
 import java.util.ArrayList;
 
+import hit.edu.Bean.MPS;
 import hit.edu.Bean.Material;
 
 public class TreeNode {
-	private Material node;
+	private Material MaterialNode;
+	private MPS MPSNode;
 	private ArrayList<TreeNode> son;
+	private TreeNode father;
 	private int QP;
-	public TreeNode(Material in)
+	
+	public MPS getMPSNode() {
+		return MPSNode;
+	}
+	public void setMPSNode(MPS mPSNode) {
+		MPSNode = mPSNode;
+	}
+	public TreeNode(Material MaterialIn, MPS mpsIn)
 	{
-		node = in;
+		MaterialNode = MaterialIn;
+		MPSNode = mpsIn;
 	}
 	public TreeNode() {
 		// TODO Auto-generated constructor stub
 	}
 	public Material getNode() {
-		return node;
+		return MaterialNode;
 	}
-	public void setNode(Material node) {
-		this.node = node;
+	public void setNode(Material mNode) {
+		this.MaterialNode = mNode;
 	}
 	public ArrayList<TreeNode> getSon() {
 		return son;
@@ -34,9 +45,13 @@ public class TreeNode {
 		QP = qP;
 	}
 	public void addSon(TreeNode tmp) {
-		this.son.add(tmp);
-		
-		
+		this.son.add(tmp);	
+	}
+	public TreeNode getFather() {
+		return father;
+	}
+	public void setFather(TreeNode father) {
+		this.father = father;
 	}
 	
 
