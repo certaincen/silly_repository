@@ -3,6 +3,28 @@ package hit.edu.Bean;
 import java.util.ArrayList;
 
 public class MPS {
+	public MPS(String name, ArrayList<Integer> gR, ArrayList<Integer> sR,
+			ArrayList<Integer> pOH, ArrayList<Integer> pAB,
+			ArrayList<Integer> nR, ArrayList<Integer> pORC,
+			ArrayList<Integer> pOR, int oH, int aL, int lT, int sT, int sS,
+			int lSR, int lS) {
+		super();
+		Name = name;
+		GR = gR;
+		SR = sR;
+		POH = pOH;
+		PAB = pAB;
+		NR = nR;
+		PORC = pORC;
+		POR = pOR;
+		OH = oH;
+		AL = aL;
+		LT = lT;
+		ST = sT;
+		SS = sS;
+		LSR = lSR;
+		LS = lS;
+	}
 	private String Name;
 	private ArrayList<Integer> GR =  new ArrayList<Integer>();
 	private ArrayList<Integer> SR = new ArrayList<Integer>();
@@ -181,7 +203,7 @@ public class MPS {
 				}			
 	}
 	public void show() {
-		
+		System.out.println(this.toString());
 		
 	}
 

@@ -3,6 +3,13 @@ package hit.edu.Bean;
 import java.util.ArrayList;
 
 public class Inventory {
+	public Inventory(String name, int oH, int aL, ArrayList<Integer> schedule) {
+		super();
+		Name = name;
+		OH = oH;
+		AL = aL;
+		Schedule = schedule;
+	}
 	private String Name;
 	private int OH;
 	private int AL;

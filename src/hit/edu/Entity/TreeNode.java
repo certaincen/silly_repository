@@ -53,6 +53,13 @@ public class TreeNode {
 	public void setFather(TreeNode father) {
 		this.father = father;
 	}
-	
+	public void show()
+	{
+		for (TreeNode i :this.son)
+		{
+			System.out.println(i.toString());
+			i.show();
+		}
+	}
 
 }
