@@ -185,4 +185,7 @@ public class MPS {
 		
 	}
 
+	public String getName() {
+		return Name;
+	}
 }
