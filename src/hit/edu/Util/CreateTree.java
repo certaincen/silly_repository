@@ -17,7 +17,7 @@ public class CreateTree {
 	{
 		return NodeMap;
 	}
-	public TreeNode createTree(BOM[] bom, List<Material> material, HashMap<String, Inventory> inventoryMap)
+	public TreeNode createTree(BOM[] bom, Material[] material, HashMap<String, Inventory> inventoryMap)
 	{
 		TreeNode root = new TreeNode();
 		NodeMap.put("root", root);

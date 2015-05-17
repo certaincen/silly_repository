@@ -59,6 +59,8 @@ public class CalculateMPS {
 			}
 			if (lsr == 2)
 			{
+				int orderNum = curMPS.getLS();
+				
 				curMPS.setPORCatIndex(curMPS.getLS(), t);
 			}
 			if (lsr == 3)
