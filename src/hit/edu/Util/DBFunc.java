@@ -1,9 +1,6 @@
 package hit.edu.Util;
 
-import hit.edu.Bean.BOM;
-import hit.edu.Bean.Inventory;
-import hit.edu.Bean.MPS;
-import hit.edu.Bean.Material;
+import hit.edu.Bean.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -83,17 +80,17 @@ public class DBFunc {
 		
 	}
 	
-	public ArrayList<Material> Material_Query(){
+	public Material Material_Query(String product){
 		int lsr;
-		ArrayList<Material> material_list = new ArrayList<Material>();
-		sql = "select * from material;";
+		Material m = new Material();
+		sql = "select * from material where name = ?;";
 		try 
 		{
 			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, product);
 			rs = pstmt.executeQuery();
-			while(rs.next())
+			if(rs.next())
 			{
-				Material m = new Material();
 				m.setName(rs.getString("name"));
 				m.setLT(rs.getInt("LT"));
 				m.setST(rs.getInt("ST"));
@@ -108,10 +105,8 @@ public class DBFunc {
 					m.setLSR("FOQ");
 				else
 					m.setLSR("POQ");
-				
-				material_list.add(m);
 			}
-			return material_list;
+			return m;
 		} 
 		catch (SQLException e) {
 			e.printStackTrace();
@@ -136,7 +131,8 @@ public class DBFunc {
 			str="";
 			num = i.getSchedule();
 			for (int j=0;j<num.length;j++)
-				str += (num+" ");
+				str += (num[j]+" ");
+			
 		/*  while(it.hasNext())
 			{
 				num = it.next();
@@ -153,20 +149,20 @@ public class DBFunc {
 		}
 	}
 	
-	public ArrayList<Inventory> Inventory_Query()
+	public Inventory Inventory_Query(String product)
 	{
-		ArrayList<Inventory> inventory_list = new ArrayList<Inventory>();
+		Inventory i = new Inventory();
 		//ArrayList<Integer> schedule = new ArrayList<Integer>();
 		int[] schedule = new int[13];
-		sql = "select * from inventory;";			
+		sql = "select * from inventory where Name = ?;";			
 		try 
 		{
 			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, product);
 			rs = pstmt.executeQuery();
-			while(rs.next())
+			if(rs.next())
 			{
-				Inventory i = new Inventory();
-				i.setName(rs.getString("name"));
+				i.setName(rs.getString("Name"));
 				i.setOH(rs.getInt("OH"));
 				i.setAL(rs.getInt("AL"));
 				
@@ -175,10 +171,8 @@ public class DBFunc {
 					schedule[k] = Integer.parseInt(strs[k]);
 					//schedule.add(Integer.parseInt(strs[k]));
 				i.setSchedule(schedule);
-				
-				inventory_list.add(i);
 			}
-			return inventory_list;
+			return i;
 		} 
 		catch (SQLException e) 
 		{
@@ -187,7 +181,7 @@ public class DBFunc {
 		return null;
 	}
 
-//	��ѯ�ж��ٸ����ڣ�ppt����12
+//	周期查询，ppt上13
 	public int Period_Query()
 	{
 		sql = "select * from inventory;";			
@@ -208,7 +202,7 @@ public class DBFunc {
 		return 0;
 	}
 
-//	pΪ������
+//	p为周期数
 	public void MPS_Insert(MPS mps,int p)
 	{
 		sql = "insert into mps values(?,?,?,?,?,?,?,?,?);";
@@ -236,11 +230,11 @@ public class DBFunc {
 		}
 	}
 
-//	productΪ��Ʒ��
+//	product为产品名
 	public MPS MPS_Query(String product)
 	{
 		MPS mps = new MPS();
-		sql = "select * from mps where Name = ? order by Period asc;";//����������������			
+		sql = "select * from mps where Name = ? order by Period asc;";//按照周期period升序排列
 		try 
 		{
 			pstmt = conn.prepareStatement(sql);
@@ -259,8 +253,32 @@ public class DBFunc {
 				mps.setPOR(rs.getInt("POR"), index);
 				index++;
 			}
+			
+			sql = "select * from material where Name = ?;";//LT,ST,SS,LSR,LS
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, product);
+			rs = pstmt.executeQuery();
+			if(rs.next())
+			{
+				mps.setLT(rs.getInt("LT"));
+				mps.setST(rs.getInt("ST"));
+				mps.setSS(rs.getInt("SS"));
+				mps.setLSR(rs.getInt("LSR"));
+				mps.setLS(rs.getInt("LS"));
+			}
+			
+			sql = "select * from inventory where Name = ?;";//OH,AL
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, product);
+			rs = pstmt.executeQuery();
+			if(rs.next())
+			{
+				mps.setOH(rs.getInt("OH"));
+				mps.setAL(rs.getInt("AL"));
+			}
+			
 			return mps;
-		} 
+		}
 		catch (SQLException e) 
 		{
 			e.printStackTrace();
@@ -268,9 +286,37 @@ public class DBFunc {
 		return null;
 	}
 	
-//	public static void main(String[] args)
-//	{
-//		BOMʵ�����
+//	p为周期
+	public void MPS_Update(MPS mps,int p)
+	{
+		sql = "update mps set GR=?,SR=?,POH=?,PAB=?,NR=?,PORC=?,POR=? where Name = ? and Period =?;";
+		try 
+		{
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(8, mps.getName());//设置名字
+			for(int i=0 ; i<p ; i++)
+			{
+				pstmt.setInt(9, i);//设置周期
+				pstmt.setInt(1, mps.getGR()[i]);
+				pstmt.setInt(2, mps.getSR()[i]);
+				pstmt.setInt(3, mps.getPOH()[i]);
+				pstmt.setInt(4, mps.getPAB()[i]);
+				pstmt.setInt(5, mps.getNR()[i]);
+				pstmt.setInt(6, mps.getPORC()[i]);
+				pstmt.setInt(7, mps.getPOR()[i]);
+				
+				pstmt.executeUpdate();
+			}
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public static void main(String[] args)
+	{
+//		BOM实例测试
 /*		BOM bom = new BOM();
 		bom.setFather("X");
 		bom.setChild("Y");
@@ -286,7 +332,7 @@ public class DBFunc {
 			System.out.println(bom.getFather()+"\t"+bom.getChild()+"\t"+bom.getQP());
 		}*/
 		
-//		Materialʵ�����
+//		Material实例测试
 /*		Material m = new Material();
 		m.setName("A");
 		m.setLT(1);
@@ -298,48 +344,47 @@ public class DBFunc {
 		
 		new DBFunc().Material_Insert(m);
 		
-		ArrayList<Material> material_list = new DBFunc().Material_Query();
-		Iterator<Material> it = material_list.iterator();
+		m = new DBFunc().Material_Query("A");
 		
-		while(it.hasNext())
-		{
-			m = it.next();
-			System.out.println(m.getName()+"\t"+m.getLT()+"\t"+m.getST());
-		}*/
+		System.out.println(m.getName()+"\t"+m.getLT()+"\t"+m.getST());*/
 		
-//		Inventoryʵ�����
+//		Inventory实例测试
 /*		Inventory i = new Inventory();
-		ArrayList<Integer> schedule = new ArrayList<Integer>();
+		int[] schedule = new int[13];
+		//ArrayList<Integer> schedule = new ArrayList<Integer>();
 		i.setName("A");
 		i.setOH(20);
 		i.setAL(0);
 		String[] strs = "0 100 0 0 0 0 0 0 0 0 0 0 0 ".split(" ");
 		for(int k=0 ; k<strs.length ; k++)
-			schedule.add(Integer.parseInt(strs[k]));
+			schedule[k] = Integer.parseInt(strs[k]);
+			//schedule.add(Integer.parseInt(strs[k]));
+		
 		i.setSchedule(schedule);
 		
 		new DBFunc().Inventory_Insert(i);
 		
-		ArrayList<Inventory> inventory_list = new DBFunc().Inventory_Query();
-		Iterator<Inventory> it = inventory_list.iterator();
-		String str;
-		Iterator<Integer> iter;
-		
-		while(it.hasNext())
-		{
-			i = it.next();
-			schedule = i.getSchedule();
-			iter = schedule.iterator();
-			System.out.print(i.getName()+"\t"+i.getOH()+"\t"+i.getAL());
-			while(iter.hasNext())
-			{
-				System.out.print(iter.next());
-			}
-			System.out.println();
-		}
+		i = new DBFunc().Inventory_Query("A");
+	
+		schedule = i.getSchedule();
+		System.out.println(i.getName()+"\t"+i.getOH()+"\t"+i.getAL()+"\t"+schedule[0]+"\t"+schedule[1]);
 		System.out.println(new DBFunc().Period_Query());*/
 
-//		mpsʵ�����
-//		���̫�࣬���ܲ�
-//	}
+//		mps实例测试
+//		数据多，不好测，只测了更新update函数，其他有关mps函数调用见Test
+/*		MPS mps = new MPS("A");
+		int[] num = new int[13];
+		for(int i= 0;i<13;i++)
+			num[i] = i;
+		mps.setGR(num);
+		mps.setSR(num);
+		mps.setPOH(num);
+		mps.setPAB(num);
+		mps.setNR(num);
+		mps.setPORC(num);
+		mps.setPOR(num);
+		
+		new DBFunc().MPS_Update(mps,13);*/
+		
+	}
 }
