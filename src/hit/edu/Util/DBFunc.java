@@ -121,9 +121,9 @@ public class DBFunc {
 	
 	public void Inventory_Insert(Inventory i)
 	{
-		int num;
+		int[] num;
 		String str;
-		Iterator<Integer> it;
+		//Iterator<Integer> it;
 		sql = "insert into inventory values (?,?,?,?);";
 		try 
 		{
@@ -132,13 +132,17 @@ public class DBFunc {
 			pstmt.setInt(2, i.getOH());
 			pstmt.setInt(3, i.getAL());
 			
-			it = i.getSchedule().iterator();
+		//	it = i.getSchedule().iterator();
 			str="";
-			while(it.hasNext())
+			num = i.getSchedule();
+			for (int j=0;j<num.length;j++)
+				str += (num+" ");
+		/*  while(it.hasNext())
 			{
 				num = it.next();
 				str+=num+" ";
 			}
+			*/
 			pstmt.setString(4, str);
 			
 			pstmt.executeUpdate();
@@ -152,7 +156,8 @@ public class DBFunc {
 	public ArrayList<Inventory> Inventory_Query()
 	{
 		ArrayList<Inventory> inventory_list = new ArrayList<Inventory>();
-		ArrayList<Integer> schedule = new ArrayList<Integer>();
+		//ArrayList<Integer> schedule = new ArrayList<Integer>();
+		int[] schedule = new int[13];
 		sql = "select * from inventory;";			
 		try 
 		{
@@ -167,7 +172,8 @@ public class DBFunc {
 				
 				String[] strs = rs.getString("Schedule").split(" ");
 				for(int k=0 ; k<strs.length ; k++)
-					schedule.add(Integer.parseInt(strs[k]));
+					schedule[k] = Integer.parseInt(strs[k]);
+					//schedule.add(Integer.parseInt(strs[k]));
 				i.setSchedule(schedule);
 				
 				inventory_list.add(i);
@@ -181,7 +187,7 @@ public class DBFunc {
 		return null;
 	}
 
-//	²éÑ¯ÓÐ¶àÉÙ¸öÖÜÆÚ£¬pptÉÏÊÇ12
+//	ï¿½ï¿½Ñ¯ï¿½Ð¶ï¿½ï¿½Ù¸ï¿½ï¿½ï¿½ï¿½Ú£ï¿½pptï¿½ï¿½ï¿½ï¿½12
 	public int Period_Query()
 	{
 		sql = "select * from inventory;";			
@@ -202,7 +208,7 @@ public class DBFunc {
 		return 0;
 	}
 
-//	pÎªÖÜÆÚÊý
+//	pÎªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	public void MPS_Insert(MPS mps,int p)
 	{
 		sql = "insert into mps values(?,?,?,?,?,?,?,?,?);";
@@ -213,13 +219,13 @@ public class DBFunc {
 			for(int i=0 ; i<p ; i++)
 			{
 				pstmt.setInt(2, i);
-				pstmt.setInt(3, mps.getGRatIndex(i));
-				pstmt.setInt(4, mps.getSRatIndex(i));
-				pstmt.setInt(5, mps.getPOHatIndex(i));
-				pstmt.setInt(6, mps.getPABatIndex(i));
-				pstmt.setInt(7, mps.getNRatIndex(i));
-				pstmt.setInt(8, mps.getPORCatIndex(i));
-				pstmt.setInt(9, mps.getPORatIndex(i));
+				pstmt.setInt(3, mps.getGR()[i]);
+				pstmt.setInt(4, mps.getSR()[i]);
+				pstmt.setInt(5, mps.getPOH()[i]);
+				pstmt.setInt(6, mps.getPAB()[i]);
+				pstmt.setInt(7, mps.getNR()[i]);
+				pstmt.setInt(8, mps.getPORC()[i]);
+				pstmt.setInt(9, mps.getPOR()[i]);
 				
 				pstmt.executeUpdate();
 			}
@@ -230,26 +236,28 @@ public class DBFunc {
 		}
 	}
 
-//	productÎªÎïÆ·Ãû
+//	productÎªï¿½ï¿½Æ·ï¿½ï¿½
 	public MPS MPS_Query(String product)
 	{
-		MPS mps = null;
-		sql = "select * from mps where Name = ? order by Period asc;";//°´ÕÕÖÜÆÚÉýÐòÅÅÁÐ			
+		MPS mps = new MPS();
+		sql = "select * from mps where Name = ? order by Period asc;";//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½			
 		try 
 		{
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, product);
 			rs = pstmt.executeQuery();
+			int index = 0;
 			while(rs.next())
 			{
-				mps = new MPS(rs.getString("Name"));
-				mps.pushGR(rs.getInt("GR"));
-				mps.pushSR(rs.getInt("SR"));
-				mps.pushPOH(rs.getInt("POH"));
-				mps.pushPAB(rs.getInt("PAB"));
-				mps.pushNR(rs.getInt("NR"));
-				mps.pushPORC(rs.getInt("PORC"));
-				mps.pushPOR(rs.getInt("POR"));
+				mps.setName(rs.getString("Name"));
+				mps.setGR(rs.getInt("GR"), index);
+				mps.setSR(rs.getInt("SR"), index);
+				mps.setPOH(rs.getInt("POH"), index);
+				mps.setPAB(rs.getInt("PAB"), index);
+				mps.setNR(rs.getInt("NR"), index);
+				mps.setPORC(rs.getInt("PORC"), index);
+				mps.setPOR(rs.getInt("POR"), index);
+				index++;
 			}
 			return mps;
 		} 
@@ -262,7 +270,7 @@ public class DBFunc {
 	
 //	public static void main(String[] args)
 //	{
-//		BOMÊµÀý²âÊÔ
+//		BOMÊµï¿½ï¿½ï¿½ï¿½ï¿½
 /*		BOM bom = new BOM();
 		bom.setFather("X");
 		bom.setChild("Y");
@@ -278,7 +286,7 @@ public class DBFunc {
 			System.out.println(bom.getFather()+"\t"+bom.getChild()+"\t"+bom.getQP());
 		}*/
 		
-//		MaterialÊµÀý²âÊÔ
+//		MaterialÊµï¿½ï¿½ï¿½ï¿½ï¿½
 /*		Material m = new Material();
 		m.setName("A");
 		m.setLT(1);
@@ -299,7 +307,7 @@ public class DBFunc {
 			System.out.println(m.getName()+"\t"+m.getLT()+"\t"+m.getST());
 		}*/
 		
-//		InventoryÊµÀý²âÊÔ
+//		InventoryÊµï¿½ï¿½ï¿½ï¿½ï¿½
 /*		Inventory i = new Inventory();
 		ArrayList<Integer> schedule = new ArrayList<Integer>();
 		i.setName("A");
@@ -331,7 +339,7 @@ public class DBFunc {
 		}
 		System.out.println(new DBFunc().Period_Query());*/
 
-//		mpsÊµÀý²âÊÔ
-//		Êý¾ÝÌ«¶à£¬²»ÄÜ²â
+//		mpsÊµï¿½ï¿½ï¿½ï¿½ï¿½
+//		ï¿½ï¿½ï¿½Ì«ï¿½à£¬ï¿½ï¿½ï¿½Ü²ï¿½
 //	}
 }

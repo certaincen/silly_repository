@@ -4,6 +4,17 @@ public class BOM {
 	private String Father;
 	private String Child;
 	private int QP;
+	
+	public BOM(String father, String child, int qP) {
+		super();
+		Father = father;
+		Child = child;
+		QP = qP;
+	}
+	public BOM()
+	{
+		
+	}
 	public String getFather() {
 		return Father;
 	}
