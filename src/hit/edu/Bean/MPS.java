@@ -165,13 +165,13 @@ public class MPS {
 	public void show() {
 
 		System.out.println("Name\t" + Name);
-/*		System.out.println("OH\t" + OH);
+		System.out.println("OH\t" + OH);
 		System.out.println("AL\t" + AL);
 		System.out.println("LT\t" + LT);
 		System.out.println("ST\t" + ST);
 		System.out.println("SS\t" + SS);
 		System.out.println("LSR\t" + LSR);
-		System.out.println("LS\t" + LS);*/
+		System.out.println("LS\t" + LS);
 		for (int i=0;i<GR.length;i++)
 		System.out.print(GR[i]+"\t");
 		System.out.print("\n");
