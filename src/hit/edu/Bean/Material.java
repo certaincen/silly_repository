@@ -12,6 +12,10 @@ public class Material implements Comparable<Material>{
 		this.setLSR(lSR);
 		LS = lS;
 	}
+	public Material()
+	{
+		
+	}
 	//public final static int LFL = 1;
 //	public final static int FOQ = 2;
 	//public final static int POQ = 3;

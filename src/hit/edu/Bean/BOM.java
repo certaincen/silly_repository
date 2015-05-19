@@ -11,6 +11,10 @@ public class BOM {
 		Child = child;
 		QP = qP;
 	}
+	public BOM()
+	{
+		
+	}
 	public String getFather() {
 		return Father;
 	}

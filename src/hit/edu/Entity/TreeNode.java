@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import hit.edu.Bean.MPS;
 import hit.edu.Bean.Material;
+import hit.edu.Util.DBFunc;
 
 public class TreeNode {
 	private Material MaterialNode;
@@ -76,13 +77,15 @@ public class TreeNode {
 	public void setInDegree(int inDegree) {
 		this.inDegree = inDegree;
 	}
-	public void show()
+	public void writetoDB()
 	{
 		for (TreeNode i :this.son)
 		{
 			//System.out.println(i.toString());
-			i.MPSNode.show();
-			i.show();
+			DBFunc dbfunc = new DBFunc();
+			dbfunc.MPS_Insert(i.getMPSNode(), i.getMPSNode().getPAB().length);
+			//i.MPSNode.show();
+			i.writetoDB();
 		}
 	}
 

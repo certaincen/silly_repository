@@ -15,7 +15,7 @@ public class Test {
 		Material m[] = new Material[6];
 		BOM bom_array[] = new BOM[8];
 		Inventory a,b,c,d,e,f;
-		//MPS mA, mB, mC, mD, mE, mF;
+		MPS mA, mB, mC, mD, mE, mF;
 		m[0] = new Material("A", 1, 0, 25, 0, "LFL", 1);
 		m[1] = new Material("B", 1, 0, 20, 0, "LFL", 1);
 		m[2] = new Material("C", 1, 0, 5, 2, "FOQ", 500);
@@ -80,8 +80,20 @@ public class Test {
 		
 		CalculateMPS cal = new CalculateMPS();
 		cal.calculateMPS(root);
-		root.show();
-			
+		root.writetoDB();
+		DBFunc dbfunc = new DBFunc();
+		mA = dbfunc.MPS_Query("A");
+		mB = dbfunc.MPS_Query("B");
+		mC = dbfunc.MPS_Query("C");
+		mD = dbfunc.MPS_Query("D");
+		mE = dbfunc.MPS_Query("E");
+		mF = dbfunc.MPS_Query("F");
+		mA.show();
+		mB.show();
+		mC.show();
+		mD.show();
+		mE.show();
+		mF.show();
 		
 
 	}

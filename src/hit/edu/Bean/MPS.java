@@ -225,7 +225,10 @@ public class MPS {
 		//System.out.println(i);
 		
 	}
-
+	public void setName(String name)
+	{
+		this.Name = name;
+	}
 	public String getName() {
 		return Name;
 	}

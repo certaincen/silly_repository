@@ -10,6 +10,9 @@ public class Inventory {
 		AL = aL;
 		Schedule = schedule;
 	}
+	public Inventory(){
+		
+	}
 	private String Name;
 	private int OH;
 	private int AL;
