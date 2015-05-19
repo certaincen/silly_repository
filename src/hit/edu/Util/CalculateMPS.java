@@ -151,8 +151,9 @@ public class CalculateMPS {
 			}
 			
 		}
-		Queue<TreeNode> q = new LinkedList<TreeNode>();;
-		for (TreeNode s:root.getSon())
+		Queue<TreeNode> q = new LinkedList<TreeNode>();
+		mpsDecompose(root, q);
+	/*	for (TreeNode s:root.getSon())
 		{
 			for (int i=1;i<=T;i++)
 			{
@@ -163,7 +164,7 @@ public class CalculateMPS {
 			mpsDecompose(s, q);
 			else
 				q.add(s);
-		}
+		}*/
 	//	BlockingQueue<TreeNode> qq = new BlockingQueue<TreeNode>();
 
 		while(!q.isEmpty())

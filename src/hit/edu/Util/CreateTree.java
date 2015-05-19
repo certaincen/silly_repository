@@ -46,7 +46,7 @@ public class CreateTree {
 		}
 		TreeNode node = NodeMap.get("A");
 		MPS mpsNode = node.getMPSNode();
-		node.setIsCalFlag(1);
+	//	node.setIsCalFlag(1);
 		int[] gr = {0, 80, 50, 100, 60, 100, 70, 100, 60, 100, 50, 100, 50};
 		int[] sr = {0, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		int[] poh = {0, 40, -10, -75, -35, -75, -45, -75, -35, -75, -25, -75, -25};
@@ -56,14 +56,14 @@ public class CreateTree {
 		int[] por = {0, 35, 100, 60, 100, 70, 100, 60, 100, 50, 100, 50, 0};
 		mpsNode.setGR(gr);
 		mpsNode.setSR(sr);
-		mpsNode.setPOH(poh);
-		mpsNode.setPAB(pab);
-		mpsNode.setNR(nr);
-		mpsNode.setPORC(porc);
-		mpsNode.setPOR(por);
+	//	mpsNode.setPOH(poh);
+	//	mpsNode.setPAB(pab);
+	//	mpsNode.setNR(nr);
+	//	mpsNode.setPORC(porc);
+	//	mpsNode.setPOR(por);
 		 node = NodeMap.get("B");
 		 mpsNode = node.getMPSNode();
-		 node.setIsCalFlag(1);
+	//	 node.setIsCalFlag(1);
 		int[] gr1 = {0, 70, 100, 50, 90, 60, 110, 60, 100, 50, 100, 50, 100};
 		int[] sr1 = {0, 50, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		int[] poh1 = {0, 20, 20, -30, -70, -40, -90, -40, -80, -30, -80, -30, -80};
@@ -72,12 +72,12 @@ public class CreateTree {
 		int[] porc1 = {0, 0, 0, 50, 90, 60, 110, 60, 100, 50, 100, 50, 100};
 		int[] por1 = {0, 0, 50, 90, 60, 110, 60, 100, 50, 100, 50, 100, 0};
 		mpsNode.setGR(gr1);
-		mpsNode.setSR(sr1);
-		mpsNode.setPOH(poh1);
-		mpsNode.setPAB(pab1);
-		mpsNode.setNR(nr1);
-		mpsNode.setPORC(porc1);
-		mpsNode.setPOR(por1);
+		//mpsNode.setSR(sr1);
+	//	mpsNode.setPOH(poh1);
+	//	mpsNode.setPAB(pab1);
+	//	mpsNode.setNR(nr1);
+	//	mpsNode.setPORC(porc1);
+	//	mpsNode.setPOR(por1);
 		return root;
 	
 	}
