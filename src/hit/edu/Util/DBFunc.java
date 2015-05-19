@@ -209,7 +209,7 @@ public class DBFunc {
 	}
 
 //	pΪ������
-	public void MPS_Insert(MPS mps,int p)
+	public int MPS_Insert(MPS mps,int p)
 	{
 		sql = "insert into mps values(?,?,?,?,?,?,?,?,?);";
 		try 
@@ -226,14 +226,21 @@ public class DBFunc {
 				pstmt.setInt(7, mps.getNR()[i]);
 				pstmt.setInt(8, mps.getPORC()[i]);
 				pstmt.setInt(9, mps.getPOR()[i]);
-				
+				try
+				{
 				pstmt.executeUpdate();
+				}
+				catch (SQLException e)
+				{
+					return -1;
+				}
 			}
 		} 
 		catch (SQLException e) 
 		{
 			e.printStackTrace();
 		}
+		return 0;
 	}
 
 //	productΪ��Ʒ��
@@ -266,6 +273,11 @@ public class DBFunc {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public void MPS_Update(MPS mpsNode, int length) {
+	
+		
 	}
 	
 //	public static void main(String[] args)
