@@ -9,15 +9,15 @@ public class Database {
 	public static final String url="jdbc:mysql://127.0.0.1/mrp";
 	public static final String name="com.mysql.jdbc.Driver";
 	public static final String user="root";
-	public static final String password="1234";
+	public static final String password="root";
 	
 	public Connection conn = null;  
     
     public Connection DatabaseConn(){
     	try{
-    		Class.forName(name);//Ö¸¶¨Á¬½ÓÀàÐÍ
-    		conn = DriverManager.getConnection(url, user, password);//»ñÈ¡Á¬½Ó
-    		return conn;//·µ»ØÁ¬½Ó
+    		Class.forName(name);//Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    		conn = DriverManager.getConnection(url, user, password);//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½
+    		return conn;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     	}
     	catch(Exception e)
     	{

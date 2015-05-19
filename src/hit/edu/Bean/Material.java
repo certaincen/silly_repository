@@ -1,6 +1,21 @@
 package hit.edu.Bean;
 
 public class Material implements Comparable<Material>{
+	public Material(String name, int lT, int sT, int sS, int lLC, String lSR,
+			int lS) {
+		super();
+		Name = name;
+		LT = lT;
+		ST = sT;
+		SS = sS;
+		LLC = lLC;
+		this.setLSR(lSR);
+		LS = lS;
+	}
+	public Material()
+	{
+		
+	}
 	//public final static int LFL = 1;
 //	public final static int FOQ = 2;
 	//public final static int POQ = 3;

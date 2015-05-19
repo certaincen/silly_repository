@@ -1,16 +1,20 @@
 package hit.edu.Entity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import hit.edu.Bean.MPS;
 import hit.edu.Bean.Material;
+import hit.edu.Util.DBFunc;
 
 public class TreeNode {
 	private Material MaterialNode;
 	private MPS MPSNode;
-	private ArrayList<TreeNode> son;
+	private ArrayList<TreeNode> son = new ArrayList<TreeNode>();
 	private TreeNode father;
-	private int QP;
+	private HashMap<String, Integer> QP = new HashMap<String, Integer>();
+	private int inDegree;
+	private int isCalFlag;
 	
 	public MPS getMPSNode() {
 		return MPSNode;
@@ -22,9 +26,17 @@ public class TreeNode {
 	{
 		MaterialNode = MaterialIn;
 		MPSNode = mpsIn;
+		this.inDegree = 0;
+		this.isCalFlag = 0;
 	}
 	public TreeNode() {
 		// TODO Auto-generated constructor stub
+	}
+	public int getIsCalFlag() {
+		return isCalFlag;
+	}
+	public void setIsCalFlag(int isCalFlag) {
+		this.isCalFlag = isCalFlag;
 	}
 	public Material getNode() {
 		return MaterialNode;
@@ -38,10 +50,15 @@ public class TreeNode {
 	public void setSon(ArrayList<TreeNode> son) {
 		this.son = son;
 	}
-	public int getQP() {
+
+	public HashMap<String, Integer> getQP() {
 		return QP;
 	}
-	public void setQP(int qP) {
+	public void addQP(String key, int value)
+	{
+		QP.put(key, value);
+	}
+	public void setQP(HashMap<String, Integer> qP) {
 		QP = qP;
 	}
 	public void addSon(TreeNode tmp) {
@@ -54,5 +71,22 @@ public class TreeNode {
 		this.father = father;
 	}
 	
+	public int getInDegree() {
+		return inDegree;
+	}
+	public void setInDegree(int inDegree) {
+		this.inDegree = inDegree;
+	}
+	public void writetoDB()
+	{
+		for (TreeNode i :this.son)
+		{
+			//System.out.println(i.toString());
+			DBFunc dbfunc = new DBFunc();
+			dbfunc.MPS_Insert(i.getMPSNode(), i.getMPSNode().getPAB().length);
+			//i.MPSNode.show();
+			i.writetoDB();
+		}
+	}
 
 }

@@ -3,14 +3,44 @@ package hit.edu.Bean;
 import java.util.ArrayList;
 
 public class MPS {
+	public MPS(String name, int[] gR, int[] sR,
+			int[] pOH, int[] pAB,
+			int[] nR, int[] pORC,
+			int[] pOR, int oH, int aL, int lT, int sT, int sS,
+			int lSR, int lS) {
+		super();
+		Name = name;
+		GR = gR;
+		SR = sR;
+		POH = pOH;
+		PAB = pAB;
+		NR = nR;
+		PORC = pORC;
+		POR = pOR;
+		OH = oH;
+		AL = aL;
+		LT = lT;
+		ST = sT;
+		SS = sS;
+		LSR = lSR;
+		LS = lS;
+	}
 	private String Name;
-	private ArrayList<Integer> GR =  new ArrayList<Integer>();
+/*	private ArrayList<Integer> GR =  new ArrayList<Integer>();
 	private ArrayList<Integer> SR = new ArrayList<Integer>();
 	private ArrayList<Integer> POH = new ArrayList<Integer>();
 	private ArrayList<Integer> PAB = new ArrayList<Integer>();
 	private ArrayList<Integer> NR = new ArrayList<Integer>();
 	private ArrayList<Integer> PORC = new ArrayList<Integer>();
-	private ArrayList<Integer> POR = new ArrayList<Integer>();
+	private ArrayList<Integer> POR = new ArrayList<Integer>();*/
+	int[] GR = new int[13];
+	int[] SR = new int[13];
+	int[] POH = new int[13];
+	int[] PAB = new int[13];
+	int[] NR = new int[13];
+	int[] PORC = new int[13];
+	int[] POR = new int[13];
+	
 	private int OH;
 	private int AL;
 	private int LT;
@@ -40,96 +70,48 @@ public class MPS {
 	{
 		
 	}
-	public void pushGR(int x)
-	{
-		GR.add(x);
+
+	public int[] getGR() {
+		return GR;
 	}
-	public void addGRatIndex(int x, int index)
-	{
-		int tmp = this.getGRatIndex(x);
-		GR.remove(index);
-		GR.add(tmp+x, index);
-		
+	public void setGR(int gR, int index) {
+		GR[index] = gR;
 	}
-	public void setGRatIndex(int x, int index)
-	{
-		GR.add(x, index);
+	public int[] getSR() {
+		return SR;
 	}
-	public int getGRatIndex(int index)
-	{
-		return GR.get(index);
+	public void setSR(int sR, int index) {
+		SR[index] = sR;
 	}
-	public void pushSR(int x)
-	{
-		SR.add(x);
+	public int[] getPOH() {
+		return POH;
 	}
-	public void setSRatIndex(int x, int index)
-	{
-		SR.add(x, index);
+	public void setPOH(int pOH, int index) {
+		POH[index] = pOH;
 	}
-	public int getSRatIndex(int index)
-	{
-		return SR.get(index);
+	public int[] getPAB() {
+		return PAB;
 	}
-	public void pushPOH(int x)
-	{
-		POH.add(x);
+	public void setPAB(int pAB, int index) {
+		PAB[index] = pAB;
 	}
-	public void setPOHatIndex(int x, int index)
-	{
-		POH.add(x, index);
+	public int[] getNR() {
+		return NR;
 	}
-	public int getPOHatIndex(int index)
-	{
-		return POH.get(index);
+	public void setNR(int nR, int index) {
+		NR[index] = nR;
 	}
-	public void pushPAB(int x)
-	{
-		PAB.add(x);
+	public int[] getPORC() {
+		return PORC;
 	}
-	public void setPABatIndex(int x, int index)
-	{
-		PAB.add(x, index);
+	public void setPORC(int pORC, int index) {
+		PORC[index] = pORC;
 	}
-	public int getPABatIndex(int index)
-	{
-		return PAB.get(index);
+	public int[] getPOR() {
+		return POR;
 	}
-	public void pushNR(int x)
-	{
-		NR.add(x);
-	}
-	public void setNRatIndex(int x, int index)
-	{
-		NR.add(x, index);
-	}
-	public int getNRatIndex(int index)
-	{
-		return NR.get(index);
-	}
-	public void pushPORC(int x)
-	{
-		PORC.add(x);
-	}
-	public void setPORCatIndex(int x, int index)
-	{
-		PORC.add(x, index);
-	}
-	public int getPORCatIndex(int index)
-	{
-		return PORC.get(index);
-	}
-	public void pushPOR(int x)
-	{
-		POR.add(x);
-	}
-	public void setPORatIndex(int x, int index)
-	{
-		POR.add(x, index);
-	}
-	public int getPORatIndex(int index)
-	{
-		return POR.get(index);
+	public void setPOR(int pOR, int index) {
+		POR[index] = pOR;
 	}
 	public int getOH() {
 		return OH;
@@ -175,16 +157,78 @@ public class MPS {
 				this.LSR = material.getLSR();
 				this.OH = inventory.getOH();
 				this.AL = inventory.getAL();
-				for (int i=0;i<inventory.getSchedule().size();i++)
+				for (int i=0;i<inventory.getSchedule().length;i++)
 				{
-					SR.add(i, inventory.getSchedule().get(i));
+					SR[i] = inventory.getSchedule()[i];
 				}			
 	}
 	public void show() {
+
+		System.out.println("Name\t" + Name);
+		System.out.println("OH\t" + OH);
+		System.out.println("AL\t" + AL);
+		System.out.println("LT\t" + LT);
+		System.out.println("ST\t" + ST);
+		System.out.println("SS\t" + SS);
+		System.out.println("LSR\t" + LSR);
+		System.out.println("LS\t" + LS);
+		for (int i=0;i<GR.length;i++)
+		System.out.print(GR[i]+"\t");
+		System.out.print("\n");
+		for (int i=0;i<SR.length;i++)
+			System.out.print(SR[i]+"\t");
+		System.out.print("\n");
+		for (int i=0;i<POH.length;i++)
+			System.out.print(POH[i]+"\t");
+		System.out.print("\n");
+		for (int i=0;i<PAB.length;i++)
+			System.out.print(PAB[i]+"\t");
+		System.out.print("\n");
+		for (int i=0;i<NR.length;i++)
+			System.out.print(NR[i]+"\t");
+		System.out.print("\n");
+		for (int i=0;i<PORC.length;i++)
+			System.out.print(PORC[i]+"\t");
+		System.out.print("\n");
+		for (int i=0;i<POR.length;i++)
+			System.out.print(POR[i]+"\t");
+		System.out.print("\n");
+
 		
+		
+		//System.out.println(this.toString());
 		
 	}
-
+	public void setGR(int[] gR) {
+		GR = gR;
+	}
+	public void setSR(int[] sR) {
+		SR = sR;
+	}
+	public void setPOH(int[] pOH) {
+		POH = pOH;
+	}
+	public void setPAB(int[] pAB) {
+		PAB = pAB;
+	}
+	public void setNR(int[] nR) {
+		NR = nR;
+	}
+	public void setPORC(int[] pORC) {
+		PORC = pORC;
+	}
+	public void setPOR(int[] pOR) {
+		POR = pOR;
+	}
+	public void addGR(int t, int i) {
+		GR[i] += t;
+		//System.out.println(i);
+		
+	}
+	public void setName(String name)
+	{
+		this.Name = name;
+	}
 	public String getName() {
 		return Name;
 	}
