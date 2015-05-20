@@ -4,19 +4,28 @@
  */
 package hit.edu.GUI;
 
+import java.util.ArrayList;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
  * @author Noah
  */
 public class MainFrame extends javax.swing.JFrame {
-
+    
     /**
      * Creates new form MainFrame
      */
     public MainFrame() {
+        gen_table_col_array();  //生成表格的数据
         initComponents();
         this.setLocationRelativeTo(null);   //设置为居中
     }
@@ -30,7 +39,94 @@ public class MainFrame extends javax.swing.JFrame {
     }
     //生成1~356期的表格生成模型
     private void gen_table_col_array(){
-        
+        for(int i = 1 ;i <= 30 ; i++){
+            Object [][] tmpArray = new Object[1][i+3];
+            //tmpArray = new Object[1][i+3];
+            for (int j = 0; j < i + 3; j++){
+                tmpArray[0][j] = null;
+            }
+            TwoDArray tmp2D = new TwoDArray(tmpArray);
+            //System.out.println("G");
+            inventory_model_list.add(tmp2D);
+        }
+        //inventory_model_list.add(tmpArray);
+        System.out.println("First Fuck" + inventory_model_list.size());
+        for (int i = 1; i<= 30; i++){
+            String [] nameArray = null;
+            nameArray = new String[i+3];
+            nameArray[0] = "P-No";
+            nameArray[1] = "OH";
+            nameArray[2] = "AL";
+            for (int j = 3; j < i +3 ;j++){
+                nameArray[j] = (Integer.toString(j-3));
+            }
+            inventory_name_list.add(nameArray);
+        }
+        for (int i = 1; i<=30; i++){
+            Class [] classArray = null;
+            classArray = new Class[i+3];
+            classArray[0] = java.lang.String.class;
+            classArray[1] = java.lang.Integer.class;
+            classArray[2] = java.lang.Integer.class;
+            for (int j = 3; j < i + 3; j ++){
+                classArray[j] = java.lang.Integer.class;
+            }
+            inventory_class_list.add(classArray);
+        }
+    }
+    private synchronized void gen_inventory_table(){
+
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+            int type_count = (Integer)type_spinner.getModel().getValue();
+            System.out.println(type_count);
+            final int period_count = (Integer)period_spinner.getModel().getValue();
+            System.out.println(period_count);
+            inventory_table.setModel(new javax.swing.table.DefaultTableModel(
+            inventory_model_list.get(type_count-1).array,
+            inventory_name_list.get(period_count-1)
+            ) {
+            Class[] types = inventory_class_list.get(period_count-1);
+            public Class getColumnClass(int columnIndex) {
+                System.out.println(columnIndex);
+                return types [columnIndex];
+            }
+            });
+ 
+            /*
+            DefaultTableModel curModel = (DefaultTableModel)inventory_table.getModel();
+            
+            inventory_table = new JTable();
+            int curCount = curModel.getColumnCount();    
+            while(curCount < period_count + 3){
+                curModel.addColumn("Fuck", (Object[])null);
+                System.out.println("MLGB");
+                //inventory_table.validate();
+                curModel.fireTableDataChanged();
+                curModel.fireTableStructureChanged();
+                curCount += 1;
+            }*/
+            //inventory_table.setModel(curModel);
+            inventory_table.repaint();
+            }
+        });
+
+               
+        /*
+        System.out.println("Fuck "+inventory_model_list.size());
+        System.out.println("Fuck "+inventory_name_list.size());
+        inventory_table.setModel(new javax.swing.table.DefaultTableModel(
+            inventory_model_list.get(type_count-1).array,
+            inventory_name_list.get(period_count-1)
+            ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Object.class, java.lang.Object.class
+            };
+            public Class getColumnClass(int columnIndex) {
+                System.out.println(columnIndex);
+                return types [columnIndex];
+            }
+            });*/
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -67,8 +163,8 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jSpinner1 = new javax.swing.JSpinner();
-        jSpinner2 = new javax.swing.JSpinner();
+        type_spinner = new javax.swing.JSpinner();
+        period_spinner = new javax.swing.JSpinner();
         jLabel7 = new javax.swing.JLabel();
         fin_init_button = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
@@ -87,9 +183,18 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel16 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
+        jScrollPane4 = new javax.swing.JScrollPane();
         inventory_table = new javax.swing.JTable();
+        jLabel18 = new javax.swing.JLabel();
+        add_inventory_button = new javax.swing.JButton();
+        del_inventory_button = new javax.swing.JButton();
+        fin_inventory_button = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        gr_table = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
         jPanel7 = new javax.swing.JPanel();
 
         jTextField1.setText("jTextField1");
@@ -187,6 +292,7 @@ public class MainFrame extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("MRP计算系统"); // NOI18N
 
         jTabbedPane1.setTabPlacement(javax.swing.JTabbedPane.LEFT);
 
@@ -239,7 +345,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(view_past_button)
                     .addComponent(new_mpr_button))
-                .addContainerGap(134, Short.MAX_VALUE))
+                .addContainerGap(146, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("用户向导", jPanel1);
@@ -251,6 +357,10 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel5.setText("种");
 
         jLabel6.setText("期");
+
+        type_spinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(6), Integer.valueOf(0), null, Integer.valueOf(1)));
+
+        period_spinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(12), Integer.valueOf(0), null, Integer.valueOf(1)));
 
         jLabel7.setFont(new java.awt.Font("宋体", 0, 18)); // NOI18N
         jLabel7.setText("输入本次要计算的物料种类数目以及计算期数：");
@@ -276,11 +386,11 @@ public class MainFrame extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(period_spinner, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabel6))
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(type_spinner, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabel5))))
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -300,15 +410,15 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jLabel5)
-                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(type_spinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(66, 66, 66)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(jLabel6)
-                    .addComponent(jSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(period_spinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(71, 71, 71)
                 .addComponent(fin_init_button)
-                .addContainerGap(98, Short.MAX_VALUE))
+                .addContainerGap(110, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("初始化设置", jPanel2);
@@ -388,7 +498,7 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(del_item_master_button)
                         .addGap(32, 32, 32)
                         .addComponent(fin_item_master_button)))
-                .addContainerGap(133, Short.MAX_VALUE))
+                .addContainerGap(145, Short.MAX_VALUE))
         );
 
         del_item_master_button.getAccessibleContext().setAccessibleDescription("删除当前选中的一行表格数据");
@@ -492,60 +602,151 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(jLabel16)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel17)))
-                .addContainerGap(115, Short.MAX_VALUE))
+                .addContainerGap(127, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("录入BOM", jPanel4);
 
         inventory_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "P-No", "OH", "AL"
+                "P-No", "OH", "AL", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(inventory_table);
+        jScrollPane4.setViewportView(inventory_table);
+
+        jLabel18.setText("库存信息表");
+
+        add_inventory_button.setText("添加一行");
+        add_inventory_button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                add_inventory_buttonActionPerformed(evt);
+            }
+        });
+
+        del_inventory_button.setText("删除一行");
+        del_inventory_button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                del_inventory_buttonActionPerformed(evt);
+            }
+        });
+
+        fin_inventory_button.setText("完成输入");
+        fin_inventory_button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fin_inventory_buttonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(59, 59, 59)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(257, Short.MAX_VALUE))
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane4))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(327, 327, 327)
+                        .addComponent(jLabel18)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(93, 93, 93)
+                .addComponent(add_inventory_button)
+                .addGap(149, 149, 149)
+                .addComponent(del_inventory_button)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 174, Short.MAX_VALUE)
+                .addComponent(fin_inventory_button)
+                .addGap(109, 109, 109))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                .addContainerGap(19, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel18)
+                .addGap(11, 11, 11)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(53, 53, 53)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(add_inventory_button)
+                    .addComponent(del_inventory_button)
+                    .addComponent(fin_inventory_button))
+                .addContainerGap(135, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("录入库存", jPanel5);
+
+        gr_table.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "P-No", "GR", "SR", "POR"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(gr_table);
+
+        jButton1.setText("添加一行");
+
+        jButton2.setText("删除一行");
+
+        jButton3.setText("计算结果");
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 768, Short.MAX_VALUE)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGap(71, 71, 71)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 376, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 127, Short.MAX_VALUE)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2)
+                    .addComponent(jButton3))
+                .addGap(113, 113, 113))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 457, Short.MAX_VALUE)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(91, 91, 91)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(112, 112, 112)
+                        .addComponent(jButton1)
+                        .addGap(48, 48, 48)
+                        .addComponent(jButton2)
+                        .addGap(48, 48, 48)
+                        .addComponent(jButton3)))
+                .addContainerGap(173, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("录入GR", jPanel6);
@@ -558,7 +759,7 @@ public class MainFrame extends javax.swing.JFrame {
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 457, Short.MAX_VALUE)
+            .addGap(0, 469, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("计算结果", jPanel7);
@@ -635,7 +836,6 @@ public class MainFrame extends javax.swing.JFrame {
     private void del_bom_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_del_bom_buttonActionPerformed
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel) bom_table.getModel();
-        //model.addRow(new Object[]{null, null, null, null, null, null ,null});
         //model.removeRow(model.getRowCount()-1);             //减少一行
         int sr = bom_table.getSelectedRow();
         System.out.println(sr);
@@ -650,8 +850,35 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         int now_index = jTabbedPane1.getSelectedIndex();
         jTabbedPane1.setSelectedIndex(now_index+1);
+        gen_inventory_table();
         deactive_tab(now_index+1);
     }//GEN-LAST:event_fin_bom_buttonActionPerformed
+
+    private void add_inventory_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_inventory_buttonActionPerformed
+        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) inventory_table.getModel();
+        //Object []m = inventory_model_list.get(model.getRowCount()-1).array;
+        model.addRow((Vector)null);
+    }//GEN-LAST:event_add_inventory_buttonActionPerformed
+
+    private void del_inventory_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_del_inventory_buttonActionPerformed
+        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) inventory_table.getModel();
+        //model.removeRow(model.getRowCount()-1);             //减少一行
+        int sr = inventory_table.getSelectedRow();
+        if(sr == -1){
+            JOptionPane.showMessageDialog(null,"请选中您想删除的一行");
+        }else{
+            model.removeRow(inventory_table.getSelectedRow());    //删除选中的那一行
+        }        
+    }//GEN-LAST:event_del_inventory_buttonActionPerformed
+
+    private void fin_inventory_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fin_inventory_buttonActionPerformed
+        // TODO add your handling code here:
+        int now_index = jTabbedPane1.getSelectedIndex();
+        jTabbedPane1.setSelectedIndex(now_index+1);
+        deactive_tab(now_index+1);        
+    }//GEN-LAST:event_fin_inventory_buttonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -683,21 +910,47 @@ public class MainFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+                /*try {
+                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (InstantiationException ex) {
+                    Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IllegalAccessException ex) {
+                    Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (UnsupportedLookAndFeelException ex) {
+                    Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                }*/
                 new MainFrame().setVisible(true);
             }
         });
     }
+    
+   private class TwoDArray {
+        Object[][] array;
+        TwoDArray(Object[][] initialArray){
+            array = initialArray;
+        }
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton add_bom_button;
+    private javax.swing.JButton add_inventory_button;
     private javax.swing.JButton add_item_master_button;
     private javax.swing.JTable bom_table;
     private javax.swing.JButton del_bom_button;
+    private javax.swing.JButton del_inventory_button;
     private javax.swing.JButton del_item_master_button;
     private javax.swing.JButton fin_bom_button;
     private javax.swing.JButton fin_init_button;
+    private javax.swing.JButton fin_inventory_button;
     private javax.swing.JButton fin_item_master_button;
+    private javax.swing.JTable gr_table;
     private javax.swing.JTable inventory_table;
     private javax.swing.JTable item_master_table;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -708,6 +961,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -726,8 +980,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JSpinner jSpinner1;
-    private javax.swing.JSpinner jSpinner2;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
@@ -737,6 +990,14 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
     private javax.swing.JButton new_mpr_button;
+    private javax.swing.JSpinner period_spinner;
+    private javax.swing.JSpinner type_spinner;
     private javax.swing.JButton view_past_button;
     // End of variables declaration//GEN-END:variables
+    private ArrayList<String[]> inventory_name_list = new ArrayList<String[]>();
+    private ArrayList<TwoDArray> inventory_model_list = new ArrayList<TwoDArray>();
+    private ArrayList<Class []> inventory_class_list = new ArrayList<Class[]>();
+    
+    
+    ;
 }
