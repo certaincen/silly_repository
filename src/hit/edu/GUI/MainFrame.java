@@ -268,7 +268,7 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel30 = new javax.swing.JLabel();
         lfl_text = new javax.swing.JTextField();
         home_button = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        quit_button = new javax.swing.JButton();
 
         jTextField1.setText("jTextField1");
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
@@ -949,8 +949,18 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel30.setText("LFL：");
 
         home_button.setText("返回首页");
+        home_button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                home_buttonActionPerformed(evt);
+            }
+        });
 
-        jButton2.setText("退出软件");
+        quit_button.setText("退出软件");
+        quit_button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                quit_buttonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -1004,7 +1014,7 @@ public class MainFrame extends javax.swing.JFrame {
                         .addGap(208, 208, 208)
                         .addComponent(home_button)
                         .addGap(127, 127, 127)
-                        .addComponent(jButton2)))
+                        .addComponent(quit_button)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
@@ -1038,7 +1048,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGap(60, 60, 60)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(home_button)
-                    .addComponent(jButton2))
+                    .addComponent(quit_button))
                 .addContainerGap(111, Short.MAX_VALUE))
         );
 
@@ -1060,6 +1070,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void view_past_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_view_past_buttonActionPerformed
         // TODO add your handling code here:
+        jTabbedPane1.setSelectedIndex(6);
     }//GEN-LAST:event_view_past_buttonActionPerformed
 
     private void new_mpr_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_new_mpr_buttonActionPerformed
@@ -1200,6 +1211,17 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_type_textActionPerformed
 
+    private void quit_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quit_buttonActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_quit_buttonActionPerformed
+
+    private void home_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_home_buttonActionPerformed
+        // TODO add your handling code here:
+        jTabbedPane1.setSelectedIndex(0);
+        
+    }//GEN-LAST:event_home_buttonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1274,7 +1296,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton home_button;
     private javax.swing.JTable inventory_table;
     private javax.swing.JTable item_master_table;
-    private javax.swing.JButton jButton2;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JLabel jLabel1;
@@ -1333,6 +1354,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton new_mpr_button;
     private javax.swing.JTextField oh_text;
     private javax.swing.JSpinner period_spinner;
+    private javax.swing.JButton quit_button;
     private javax.swing.JTextField ss_text;
     private javax.swing.JTextField st_text;
     private javax.swing.JSpinner type_spinner;
