@@ -83,7 +83,10 @@ public class TreeNode {
 		{
 			//System.out.println(i.toString());
 			DBFunc dbfunc = new DBFunc();
-			dbfunc.MPS_Insert(i.getMPSNode(), i.getMPSNode().getPAB().length);
+			if (dbfunc.MPS_Insert(i.getMPSNode(), i.getMPSNode().getPAB().length) == -1)
+			{
+				dbfunc.MPS_Update(i.getMPSNode(), i.getMPSNode().getPAB().length);
+			}
 			//i.MPSNode.show();
 			i.writetoDB();
 		}

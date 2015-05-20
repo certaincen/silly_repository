@@ -15,9 +15,9 @@ public class Database {
     
     public Connection DatabaseConn(){
     	try{
-    		Class.forName(name);//ָ����������
-    		conn = DriverManager.getConnection(url, user, password);//��ȡ����
-    		return conn;//��������
+    		Class.forName(name);
+    		conn = DriverManager.getConnection(url, user, password);
+    		return conn;
     	}
     	catch(Exception e)
     	{
