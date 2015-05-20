@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.UIManager;
@@ -96,22 +97,20 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-               
-        /*
-        System.out.println("Fuck "+inventory_model_list.size());
-        System.out.println("Fuck "+inventory_name_list.size());
-        inventory_table.setModel(new javax.swing.table.DefaultTableModel(
-            inventory_model_list.get(type_count-1).array,
-            inventory_name_list.get(period_count-1)
-            ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Object.class, java.lang.Object.class
-            };
-            public Class getColumnClass(int columnIndex) {
-                System.out.println(columnIndex);
-                return types [columnIndex];
-            }
-            });*/
+    }
+    /**
+     * 这个方法用来读取物料主文件中所有的物料编号用于最后显示结果时用户选择下拉框中显示
+     */
+    private void get_material_list(){
+        int type_count = (Integer)type_spinner.getModel().getValue();
+        Vector <String>vt = new Vector<String>();
+        DefaultTableModel tableModel = (DefaultTableModel) item_master_table.getModel();
+        for(int i = 0 ; i < type_count; i ++){    
+            vt.add((String)tableModel.getValueAt(i, 0));
+        }
+        DefaultComboBoxModel cm = new DefaultComboBoxModel(vt);
+        jComboBox1.setModel(cm);
+        jComboBox1.repaint();
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -185,6 +184,9 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel19 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
+        jLabel23 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox();
 
         jTextField1.setText("jTextField1");
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
@@ -321,7 +323,7 @@ public class MainFrame extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
                             .addComponent(jLabel2))))
-                .addContainerGap(222, Short.MAX_VALUE))
+                .addContainerGap(227, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -389,7 +391,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(309, 309, 309)
                         .addComponent(fin_init_button)))
-                .addContainerGap(356, Short.MAX_VALUE))
+                .addContainerGap(361, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -458,7 +460,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        jLabel21.setText("注意删除掉不需要的项目");
+        jLabel21.setText("(注意删除掉您不需要的项目)");
 
         jLabel22.setText("物料主文件");
 
@@ -473,7 +475,7 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(187, 187, 187)
+                        .addGap(192, 192, 192)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(58, 58, 58)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -584,7 +586,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(del_bom_button)
                     .addComponent(add_bom_button)
                     .addComponent(fin_bom_button))
-                .addContainerGap(54, Short.MAX_VALUE))
+                .addContainerGap(59, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -671,7 +673,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addComponent(add_inventory_button)
                 .addGap(149, 149, 149)
                 .addComponent(del_inventory_button)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 174, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 179, Short.MAX_VALUE)
                 .addComponent(fin_inventory_button)
                 .addGap(109, 109, 109))
             .addGroup(jPanel5Layout.createSequentialGroup()
@@ -698,8 +700,8 @@ public class MainFrame extends javax.swing.JFrame {
 
         gr_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
+                {"A",  new Integer(0)},
+                {"B",  new Integer(0)},
                 {null, null},
                 {null, null}
             },
@@ -747,7 +749,7 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addContainerGap(191, Short.MAX_VALUE)
+                .addContainerGap(196, Short.MAX_VALUE)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -786,15 +788,34 @@ public class MainFrame extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("录入GR", jPanel6);
 
+        jButton1.setText("查看物料计算结果");
+
+        jLabel23.setText("请输入想查看的物料项的物料编号，即P-No.");
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 768, Short.MAX_VALUE)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addGap(45, 45, 45)
+                .addComponent(jLabel23)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 81, Short.MAX_VALUE)
+                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(91, 91, 91)
+                .addComponent(jButton1)
+                .addGap(131, 131, 131))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 469, Short.MAX_VALUE)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel23)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
+                .addContainerGap(422, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("计算结果", jPanel7);
@@ -827,6 +848,7 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         int now_index = jTabbedPane1.getSelectedIndex();
         jTabbedPane1.setSelectedIndex(now_index+1);
+        get_material_list();
         deactive_tab(now_index+1);
     }//GEN-LAST:event_fin_item_master_buttonActionPerformed
 
@@ -1012,6 +1034,8 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTable gr_table;
     private javax.swing.JTable inventory_table;
     private javax.swing.JTable item_master_table;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -1028,6 +1052,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
