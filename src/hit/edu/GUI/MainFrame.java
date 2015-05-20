@@ -50,7 +50,7 @@ public class MainFrame extends javax.swing.JFrame {
             inventory_model_list.add(tmp2D);
         }
         //inventory_model_list.add(tmpArray);
-        System.out.println("First Fuck" + inventory_model_list.size());
+        //System.out.println("First Fuck" + inventory_model_list.size());
         for (int i = 1; i<= 30; i++){
             String [] nameArray = null;
             nameArray = new String[i+3];
@@ -79,35 +79,20 @@ public class MainFrame extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
             int type_count = (Integer)type_spinner.getModel().getValue();
-            System.out.println(type_count);
             final int period_count = (Integer)period_spinner.getModel().getValue();
-            System.out.println(period_count);
-            inventory_table.setModel(new javax.swing.table.DefaultTableModel(
-            inventory_model_list.get(type_count-1).array,
-            inventory_name_list.get(period_count-1)
-            ) {
-            Class[] types = inventory_class_list.get(period_count-1);
-            public Class getColumnClass(int columnIndex) {
-                System.out.println(columnIndex);
-                return types [columnIndex];
+            if(period_count != 13){
+                inventory_table.setModel(new javax.swing.table.DefaultTableModel(
+                inventory_model_list.get(type_count-1).array,
+                inventory_name_list.get(period_count-1)
+                ) {
+                Class[] types = inventory_class_list.get(period_count-1);
+                @Override
+                public Class getColumnClass(int columnIndex) {
+                    return types [columnIndex];
+                }
+                });
+                inventory_table.repaint();
             }
-            });
- 
-            /*
-            DefaultTableModel curModel = (DefaultTableModel)inventory_table.getModel();
-            
-            inventory_table = new JTable();
-            int curCount = curModel.getColumnCount();    
-            while(curCount < period_count + 3){
-                curModel.addColumn("Fuck", (Object[])null);
-                System.out.println("MLGB");
-                //inventory_table.validate();
-                curModel.fireTableDataChanged();
-                curModel.fireTableStructureChanged();
-                curCount += 1;
-            }*/
-            //inventory_table.setModel(curModel);
-            inventory_table.repaint();
             }
         });
 
@@ -173,6 +158,8 @@ public class MainFrame extends javax.swing.JFrame {
         add_item_master_button = new javax.swing.JButton();
         fin_item_master_button = new javax.swing.JButton();
         del_item_master_button = new javax.swing.JButton();
+        jLabel21 = new javax.swing.JLabel();
+        jLabel22 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         bom_table = new javax.swing.JTable();
@@ -192,9 +179,11 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel6 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         gr_table = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        add_gr_button = new javax.swing.JButton();
+        del_gr_button = new javax.swing.JButton();
+        fin_gr_button = new javax.swing.JButton();
+        jLabel19 = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
 
         jTextField1.setText("jTextField1");
@@ -299,7 +288,7 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("宋体", 0, 24)); // NOI18N
         jLabel1.setText("请选择您需要的功能");
 
-        view_past_button.setText("查看过往结果");
+        view_past_button.setText("查看已有结果");
         view_past_button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 view_past_buttonActionPerformed(evt);
@@ -360,7 +349,8 @@ public class MainFrame extends javax.swing.JFrame {
 
         type_spinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(6), Integer.valueOf(0), null, Integer.valueOf(1)));
 
-        period_spinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(12), Integer.valueOf(0), null, Integer.valueOf(1)));
+        period_spinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(13), Integer.valueOf(0), null, Integer.valueOf(1)));
+        period_spinner.setRequestFocusEnabled(false);
 
         jLabel7.setFont(new java.awt.Font("宋体", 0, 18)); // NOI18N
         jLabel7.setText("输入本次要计算的物料种类数目以及计算期数：");
@@ -425,10 +415,12 @@ public class MainFrame extends javax.swing.JFrame {
 
         item_master_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {"A",  new Integer(1),  new Integer(0),  new Integer(25),  new Integer(0), "FOQ",  new Integer(1)},
+                {"B",  new Integer(1),  new Integer(0),  new Integer(20),  new Integer(0), "FOQ",  new Integer(1)},
+                {"C",  new Integer(1),  new Integer(0),  new Integer(5),  new Integer(2), "FOQ",  new Integer(500)},
+                {"D",  new Integer(1),  new Integer(0),  new Integer(5),  new Integer(1), "FOQ",  new Integer(200)},
+                {"E",  new Integer(2),  new Integer(0),  new Integer(50),  new Integer(3), "FOQ",  new Integer(3)},
+                {"F",  new Integer(2),  new Integer(1),  new Integer(100),  new Integer(3), "FOQ",  new Integer(2)}
             },
             new String [] {
                 "P-No.", "LT", "ST", "SS", "LLC", "LSR", "LS"
@@ -444,10 +436,6 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(item_master_table);
         item_master_table.getColumnModel().getColumn(3).setResizable(false);
-        item_master_table.getColumnModel().getColumn(3).setHeaderValue("SS");
-        item_master_table.getColumnModel().getColumn(4).setHeaderValue("LLC");
-        item_master_table.getColumnModel().getColumn(5).setHeaderValue("LSR");
-        item_master_table.getColumnModel().getColumn(6).setHeaderValue("LS");
 
         add_item_master_button.setText("添加一行");
         add_item_master_button.addActionListener(new java.awt.event.ActionListener() {
@@ -470,18 +458,31 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        jLabel21.setText("注意删除掉不需要的项目");
+
+        jLabel22.setText("物料主文件");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel21)
+                .addGap(300, 300, 300))
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(187, 187, 187)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(58, 58, 58)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(add_item_master_button)
-                    .addComponent(fin_item_master_button)
-                    .addComponent(del_item_master_button))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(187, 187, 187)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(58, 58, 58)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(add_item_master_button)
+                            .addComponent(fin_item_master_button)
+                            .addComponent(del_item_master_button)))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(360, 360, 360)
+                        .addComponent(jLabel22)))
                 .addContainerGap(72, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -489,7 +490,9 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(77, 77, 77)
+                        .addGap(44, 44, 44)
+                        .addComponent(jLabel22)
+                        .addGap(18, 18, 18)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(140, 140, 140)
@@ -498,7 +501,9 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(del_item_master_button)
                         .addGap(32, 32, 32)
                         .addComponent(fin_item_master_button)))
-                .addContainerGap(145, Short.MAX_VALUE))
+                .addGap(44, 44, 44)
+                .addComponent(jLabel21)
+                .addContainerGap(86, Short.MAX_VALUE))
         );
 
         del_item_master_button.getAccessibleContext().setAccessibleDescription("删除当前选中的一行表格数据");
@@ -507,14 +512,14 @@ public class MainFrame extends javax.swing.JFrame {
 
         bom_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {"A", "C",  new Integer(2)},
+                {"A", "D",  new Integer(1)},
+                {"D", "E",  new Integer(2)},
+                {"D", "C",  new Integer(1)},
+                {"C", "E",  new Integer(1)},
+                {"C", "F",  new Integer(1)},
+                {"B", "E",  new Integer(1)},
+                {"B", "C", null}
             },
             new String [] {
                 "Parent", "Comp", "Q-P"
@@ -609,10 +614,12 @@ public class MainFrame extends javax.swing.JFrame {
 
         inventory_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null}
+                {"A",  new Integer(20),  new Integer(0),  new Integer(0),  new Integer(100),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0)},
+                {"B",  new Integer(40),  new Integer(0),  new Integer(0),  new Integer(50),  new Integer(100),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0)},
+                {"C",  new Integer(60),  new Integer(0),  new Integer(0),  new Integer(200),  new Integer(150),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0)},
+                {"D",  new Integer(60),  new Integer(20),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0)},
+                {"E",  new Integer(100),  new Integer(0),  new Integer(0),  new Integer(1500),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0)},
+                {"F",  new Integer(100),  new Integer(0),  new Integer(0),  new Integer(1000),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0)}
             },
             new String [] {
                 "P-No", "OH", "AL", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"
@@ -656,14 +663,8 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane4))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGap(327, 327, 327)
-                        .addComponent(jLabel18)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap()
+                .addComponent(jScrollPane4)
                 .addContainerGap())
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGap(93, 93, 93)
@@ -673,15 +674,19 @@ public class MainFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 174, Short.MAX_VALUE)
                 .addComponent(fin_inventory_button)
                 .addGap(109, 109, 109))
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(288, 288, 288)
+                .addComponent(jLabel18)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel18)
-                .addGap(11, 11, 11)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(53, 53, 53)
+                .addGap(46, 46, 46)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(add_inventory_button)
                     .addComponent(del_inventory_button)
@@ -693,17 +698,17 @@ public class MainFrame extends javax.swing.JFrame {
 
         gr_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
             },
             new String [] {
-                "P-No", "GR", "SR", "POR"
+                "P-No", "GR"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class
+                java.lang.String.class, java.lang.Integer.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -712,41 +717,71 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(gr_table);
 
-        jButton1.setText("添加一行");
+        add_gr_button.setText("添加一行");
+        add_gr_button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                add_gr_buttonActionPerformed(evt);
+            }
+        });
 
-        jButton2.setText("删除一行");
+        del_gr_button.setText("删除一行");
+        del_gr_button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                del_gr_buttonActionPerformed(evt);
+            }
+        });
 
-        jButton3.setText("计算结果");
+        fin_gr_button.setText("计算结果");
+        fin_gr_button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fin_gr_buttonActionPerformed(evt);
+            }
+        });
+
+        jLabel19.setText("请在该表格中填入独立需求项物料的需求数量，注意不要重复");
+
+        jLabel20.setText("（表格项不够可以点击添加一行按钮，输入错误可以选中该行选择删除一行）");
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(71, 71, 71)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 376, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 127, Short.MAX_VALUE)
+                .addContainerGap(191, Short.MAX_VALUE)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
-                .addGap(113, 113, 113))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel19)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(113, 113, 113)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(del_gr_button)
+                                    .addComponent(add_gr_button)
+                                    .addComponent(fin_gr_button))))
+                        .addGap(189, 189, 189))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                        .addComponent(jLabel20)
+                        .addGap(169, 169, 169))))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGap(52, 52, 52)
+                .addComponent(jLabel19)
+                .addGap(37, 37, 37)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(91, 91, 91)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(112, 112, 112)
-                        .addComponent(jButton1)
-                        .addGap(48, 48, 48)
-                        .addComponent(jButton2)
-                        .addGap(48, 48, 48)
-                        .addComponent(jButton3)))
-                .addContainerGap(173, Short.MAX_VALUE))
+                        .addGap(19, 19, 19)
+                        .addComponent(add_gr_button)
+                        .addGap(33, 33, 33)
+                        .addComponent(del_gr_button)
+                        .addGap(36, 36, 36)
+                        .addComponent(fin_gr_button))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(47, 47, 47)
+                .addComponent(jLabel20)
+                .addContainerGap(98, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("录入GR", jPanel6);
@@ -880,6 +915,32 @@ public class MainFrame extends javax.swing.JFrame {
         deactive_tab(now_index+1);        
     }//GEN-LAST:event_fin_inventory_buttonActionPerformed
 
+    private void add_gr_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_gr_buttonActionPerformed
+        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) gr_table.getModel();
+        //Object []m = inventory_model_list.get(model.getRowCount()-1).array;
+        model.addRow((Vector)null);
+    }//GEN-LAST:event_add_gr_buttonActionPerformed
+
+    private void del_gr_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_del_gr_buttonActionPerformed
+        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) gr_table.getModel();
+        //model.removeRow(model.getRowCount()-1);             //减少一行
+        int sr = gr_table.getSelectedRow();
+        if(sr == -1){
+            JOptionPane.showMessageDialog(null,"请选中您想删除的一行");
+        }else{
+            model.removeRow(gr_table.getSelectedRow());    //删除选中的那一行
+        }   
+    }//GEN-LAST:event_del_gr_buttonActionPerformed
+
+    private void fin_gr_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fin_gr_buttonActionPerformed
+        // TODO add your handling code here:
+        int now_index = jTabbedPane1.getSelectedIndex();
+        jTabbedPane1.setSelectedIndex(now_index+1);
+        deactive_tab(now_index+1);
+    }//GEN-LAST:event_fin_gr_buttonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -935,22 +996,22 @@ public class MainFrame extends javax.swing.JFrame {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton add_bom_button;
+    private javax.swing.JButton add_gr_button;
     private javax.swing.JButton add_inventory_button;
     private javax.swing.JButton add_item_master_button;
     private javax.swing.JTable bom_table;
     private javax.swing.JButton del_bom_button;
+    private javax.swing.JButton del_gr_button;
     private javax.swing.JButton del_inventory_button;
     private javax.swing.JButton del_item_master_button;
     private javax.swing.JButton fin_bom_button;
+    private javax.swing.JButton fin_gr_button;
     private javax.swing.JButton fin_init_button;
     private javax.swing.JButton fin_inventory_button;
     private javax.swing.JButton fin_item_master_button;
     private javax.swing.JTable gr_table;
     private javax.swing.JTable inventory_table;
     private javax.swing.JTable item_master_table;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -962,7 +1023,11 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;

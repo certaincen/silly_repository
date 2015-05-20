@@ -248,7 +248,7 @@
             </Component>
             <Component class="javax.swing.JButton" name="view_past_button">
               <Properties>
-                <Property name="text" type="java.lang.String" value="&#x67e5;&#x770b;&#x8fc7;&#x5f80;&#x7ed3;&#x679c;"/>
+                <Property name="text" type="java.lang.String" value="&#x67e5;&#x770b;&#x5df2;&#x6709;&#x7ed3;&#x679c;"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="view_past_buttonActionPerformed"/>
@@ -374,8 +374,9 @@
             <Component class="javax.swing.JSpinner" name="period_spinner">
               <Properties>
                 <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-                  <SpinnerModel initial="12" minimum="0" numberType="java.lang.Integer" stepSize="1" type="number"/>
+                  <SpinnerModel initial="13" minimum="0" numberType="java.lang.Integer" stepSize="1" type="number"/>
                 </Property>
+                <Property name="requestFocusEnabled" type="boolean" value="false"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel7">
@@ -408,14 +409,27 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="187" max="-2" attributes="0"/>
-                      <Component id="jScrollPane1" min="-2" pref="370" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="58" max="-2" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="jLabel21" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="300" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="add_item_master_button" min="-2" max="-2" attributes="0"/>
-                          <Component id="fin_item_master_button" min="-2" max="-2" attributes="0"/>
-                          <Component id="del_item_master_button" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="187" max="-2" attributes="0"/>
+                              <Component id="jScrollPane1" min="-2" pref="370" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="58" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="add_item_master_button" min="-2" max="-2" attributes="0"/>
+                                  <Component id="fin_item_master_button" min="-2" max="-2" attributes="0"/>
+                                  <Component id="del_item_master_button" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="360" max="-2" attributes="0"/>
+                              <Component id="jLabel22" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                       <EmptySpace pref="72" max="32767" attributes="0"/>
                   </Group>
@@ -426,7 +440,9 @@
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="77" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
+                              <Component id="jLabel22" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="jScrollPane1" min="-2" pref="247" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
@@ -438,7 +454,9 @@
                               <Component id="fin_item_master_button" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace pref="145" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
+                      <Component id="jLabel21" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="86" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -454,14 +472,63 @@
                 <Component class="javax.swing.JTable" name="item_master_table">
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                      <Table columnCount="7" rowCount="4">
-                        <Column editable="true" title="P-No." type="java.lang.String"/>
-                        <Column editable="true" title="LT" type="java.lang.Integer"/>
-                        <Column editable="true" title="ST" type="java.lang.Integer"/>
-                        <Column editable="true" title="SS" type="java.lang.Integer"/>
-                        <Column editable="true" title="LLC" type="java.lang.Integer"/>
-                        <Column editable="true" title="LSR" type="java.lang.String"/>
-                        <Column editable="true" title="LS" type="java.lang.Integer"/>
+                      <Table columnCount="7" rowCount="6">
+                        <Column editable="true" title="P-No." type="java.lang.String">
+                          <Data value="A"/>
+                          <Data value="B"/>
+                          <Data value="C"/>
+                          <Data value="D"/>
+                          <Data value="E"/>
+                          <Data value="F"/>
+                        </Column>
+                        <Column editable="true" title="LT" type="java.lang.Integer">
+                          <Data value="1"/>
+                          <Data value="1"/>
+                          <Data value="1"/>
+                          <Data value="1"/>
+                          <Data value="2"/>
+                          <Data value="2"/>
+                        </Column>
+                        <Column editable="true" title="ST" type="java.lang.Integer">
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="1"/>
+                        </Column>
+                        <Column editable="true" title="SS" type="java.lang.Integer">
+                          <Data value="25"/>
+                          <Data value="20"/>
+                          <Data value="5"/>
+                          <Data value="5"/>
+                          <Data value="50"/>
+                          <Data value="100"/>
+                        </Column>
+                        <Column editable="true" title="LLC" type="java.lang.Integer">
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="2"/>
+                          <Data value="1"/>
+                          <Data value="3"/>
+                          <Data value="3"/>
+                        </Column>
+                        <Column editable="true" title="LSR" type="java.lang.String">
+                          <Data value="FOQ"/>
+                          <Data value="FOQ"/>
+                          <Data value="FOQ"/>
+                          <Data value="FOQ"/>
+                          <Data value="FOQ"/>
+                          <Data value="FOQ"/>
+                        </Column>
+                        <Column editable="true" title="LS" type="java.lang.Integer">
+                          <Data value="1"/>
+                          <Data value="1"/>
+                          <Data value="500"/>
+                          <Data value="200"/>
+                          <Data value="3"/>
+                          <Data value="2"/>
+                        </Column>
                       </Table>
                     </Property>
                     <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -482,22 +549,22 @@
                           <Renderer/>
                         </Column>
                         <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
-                          <Title value="SS"/>
+                          <Title/>
                           <Editor/>
                           <Renderer/>
                         </Column>
                         <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                          <Title value="LLC"/>
+                          <Title/>
                           <Editor/>
                           <Renderer/>
                         </Column>
                         <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                          <Title value="LSR"/>
+                          <Title/>
                           <Editor/>
                           <Renderer/>
                         </Column>
                         <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                          <Title value="LS"/>
+                          <Title/>
                           <Editor/>
                           <Renderer/>
                         </Column>
@@ -536,6 +603,16 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="del_item_master_buttonActionPerformed"/>
               </Events>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel21">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="&#x6ce8;&#x610f;&#x5220;&#x9664;&#x6389;&#x4e0d;&#x9700;&#x8981;&#x7684;&#x9879;&#x76ee;"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel22">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="&#x7269;&#x6599;&#x4e3b;&#x6587;&#x4ef6;"/>
+              </Properties>
             </Component>
           </SubComponents>
         </Container>
@@ -620,9 +697,36 @@
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                       <Table columnCount="3" rowCount="8">
-                        <Column editable="true" title="Parent" type="java.lang.String"/>
-                        <Column editable="true" title="Comp" type="java.lang.String"/>
-                        <Column editable="true" title="Q-P" type="java.lang.Integer"/>
+                        <Column editable="true" title="Parent" type="java.lang.String">
+                          <Data value="A"/>
+                          <Data value="A"/>
+                          <Data value="D"/>
+                          <Data value="D"/>
+                          <Data value="C"/>
+                          <Data value="C"/>
+                          <Data value="B"/>
+                          <Data value="B"/>
+                        </Column>
+                        <Column editable="true" title="Comp" type="java.lang.String">
+                          <Data value="C"/>
+                          <Data value="D"/>
+                          <Data value="E"/>
+                          <Data value="C"/>
+                          <Data value="E"/>
+                          <Data value="F"/>
+                          <Data value="E"/>
+                          <Data value="C"/>
+                        </Column>
+                        <Column editable="true" title="Q-P" type="java.lang.Integer">
+                          <Data value="2"/>
+                          <Data value="1"/>
+                          <Data value="2"/>
+                          <Data value="1"/>
+                          <Data value="1"/>
+                          <Data value="1"/>
+                          <Data value="1"/>
+                          <Data value="null"/>
+                        </Column>
                       </Table>
                     </Property>
                     <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -705,17 +809,8 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jScrollPane4" max="32767" attributes="0"/>
-                          </Group>
-                          <Group type="102" attributes="0">
-                              <EmptySpace min="-2" pref="327" max="-2" attributes="0"/>
-                              <Component id="jLabel18" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                          </Group>
-                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jScrollPane4" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
@@ -727,16 +822,21 @@
                       <Component id="fin_inventory_button" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="109" max="-2" attributes="0"/>
                   </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="288" max="-2" attributes="0"/>
+                      <Component id="jLabel18" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                  </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jLabel18" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                      <Component id="jLabel18" min="-2" pref="15" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jScrollPane4" min="-2" pref="222" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="53" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="add_inventory_button" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="del_inventory_button" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -758,23 +858,135 @@
                 <Component class="javax.swing.JTable" name="inventory_table">
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                      <Table columnCount="16" rowCount="4">
-                        <Column editable="true" title="P-No" type="java.lang.String"/>
-                        <Column editable="true" title="OH" type="java.lang.Integer"/>
-                        <Column editable="true" title="AL" type="java.lang.Integer"/>
-                        <Column editable="true" title="0" type="java.lang.Integer"/>
-                        <Column editable="true" title="1" type="java.lang.Integer"/>
-                        <Column editable="true" title="2" type="java.lang.Integer"/>
-                        <Column editable="true" title="3" type="java.lang.Integer"/>
-                        <Column editable="true" title="4" type="java.lang.Integer"/>
-                        <Column editable="true" title="5" type="java.lang.Integer"/>
-                        <Column editable="true" title="6" type="java.lang.Integer"/>
-                        <Column editable="true" title="7" type="java.lang.Integer"/>
-                        <Column editable="true" title="8" type="java.lang.Integer"/>
-                        <Column editable="true" title="9" type="java.lang.Integer"/>
-                        <Column editable="true" title="10" type="java.lang.Integer"/>
-                        <Column editable="true" title="11" type="java.lang.Integer"/>
-                        <Column editable="true" title="12" type="java.lang.Integer"/>
+                      <Table columnCount="16" rowCount="6">
+                        <Column editable="true" title="P-No" type="java.lang.String">
+                          <Data value="A"/>
+                          <Data value="B"/>
+                          <Data value="C"/>
+                          <Data value="D"/>
+                          <Data value="E"/>
+                          <Data value="F"/>
+                        </Column>
+                        <Column editable="true" title="OH" type="java.lang.Integer">
+                          <Data value="20"/>
+                          <Data value="40"/>
+                          <Data value="60"/>
+                          <Data value="60"/>
+                          <Data value="100"/>
+                          <Data value="100"/>
+                        </Column>
+                        <Column editable="true" title="AL" type="java.lang.Integer">
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="20"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                        </Column>
+                        <Column editable="true" title="0" type="java.lang.Integer">
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                        </Column>
+                        <Column editable="true" title="1" type="java.lang.Integer">
+                          <Data value="100"/>
+                          <Data value="50"/>
+                          <Data value="200"/>
+                          <Data value="0"/>
+                          <Data value="1500"/>
+                          <Data value="1000"/>
+                        </Column>
+                        <Column editable="true" title="2" type="java.lang.Integer">
+                          <Data value="0"/>
+                          <Data value="100"/>
+                          <Data value="150"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                        </Column>
+                        <Column editable="true" title="3" type="java.lang.Integer">
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                        </Column>
+                        <Column editable="true" title="4" type="java.lang.Integer">
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                        </Column>
+                        <Column editable="true" title="5" type="java.lang.Integer">
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                        </Column>
+                        <Column editable="true" title="6" type="java.lang.Integer">
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                        </Column>
+                        <Column editable="true" title="7" type="java.lang.Integer">
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                        </Column>
+                        <Column editable="true" title="8" type="java.lang.Integer">
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                        </Column>
+                        <Column editable="true" title="9" type="java.lang.Integer">
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                        </Column>
+                        <Column editable="true" title="10" type="java.lang.Integer">
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                        </Column>
+                        <Column editable="true" title="11" type="java.lang.Integer">
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                        </Column>
+                        <Column editable="true" title="12" type="java.lang.Integer">
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                        </Column>
                       </Table>
                     </Property>
                     <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -911,37 +1123,52 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="71" max="-2" attributes="0"/>
-                      <Component id="jScrollPane2" min="-2" pref="376" max="-2" attributes="0"/>
-                      <EmptySpace pref="127" max="32767" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <EmptySpace pref="191" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jButton1" min="-2" max="-2" attributes="0"/>
-                          <Component id="jButton2" min="-2" max="-2" attributes="0"/>
-                          <Component id="jButton3" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jLabel19" min="-2" max="-2" attributes="0"/>
+                                  <Group type="102" attributes="0">
+                                      <Component id="jScrollPane2" min="-2" pref="169" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="113" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="del_gr_button" min="-2" max="-2" attributes="0"/>
+                                          <Component id="add_gr_button" min="-2" max="-2" attributes="0"/>
+                                          <Component id="fin_gr_button" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                              </Group>
+                              <EmptySpace min="-2" pref="189" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Component id="jLabel20" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="169" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
-                      <EmptySpace min="-2" pref="113" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
+                      <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
+                      <Component id="jLabel19" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="91" max="-2" attributes="0"/>
-                              <Component id="jScrollPane2" min="-2" pref="205" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
+                              <Component id="add_gr_button" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
+                              <Component id="del_gr_button" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
+                              <Component id="fin_gr_button" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="112" max="-2" attributes="0"/>
-                              <Component id="jButton1" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
-                              <Component id="jButton2" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
-                              <Component id="jButton3" min="-2" max="-2" attributes="0"/>
-                          </Group>
+                          <Component id="jScrollPane2" min="-2" pref="205" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="173" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
+                      <Component id="jLabel20" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="98" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -957,25 +1184,13 @@
                 <Component class="javax.swing.JTable" name="gr_table">
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                      <Table columnCount="4" rowCount="4">
+                      <Table columnCount="2" rowCount="4">
                         <Column editable="true" title="P-No" type="java.lang.String"/>
                         <Column editable="true" title="GR" type="java.lang.Integer"/>
-                        <Column editable="true" title="SR" type="java.lang.Integer"/>
-                        <Column editable="true" title="POR" type="java.lang.Integer"/>
                       </Table>
                     </Property>
                     <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                       <TableColumnModel selectionModel="0">
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                          <Title/>
-                          <Editor/>
-                          <Renderer/>
-                        </Column>
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                          <Title/>
-                          <Editor/>
-                          <Renderer/>
-                        </Column>
                         <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                           <Title/>
                           <Editor/>
@@ -995,19 +1210,38 @@
                 </Component>
               </SubComponents>
             </Container>
-            <Component class="javax.swing.JButton" name="jButton1">
+            <Component class="javax.swing.JButton" name="add_gr_button">
               <Properties>
                 <Property name="text" type="java.lang.String" value="&#x6dfb;&#x52a0;&#x4e00;&#x884c;"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="add_gr_buttonActionPerformed"/>
+              </Events>
             </Component>
-            <Component class="javax.swing.JButton" name="jButton2">
+            <Component class="javax.swing.JButton" name="del_gr_button">
               <Properties>
                 <Property name="text" type="java.lang.String" value="&#x5220;&#x9664;&#x4e00;&#x884c;"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="del_gr_buttonActionPerformed"/>
+              </Events>
             </Component>
-            <Component class="javax.swing.JButton" name="jButton3">
+            <Component class="javax.swing.JButton" name="fin_gr_button">
               <Properties>
                 <Property name="text" type="java.lang.String" value="&#x8ba1;&#x7b97;&#x7ed3;&#x679c;"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fin_gr_buttonActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel19">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="&#x8bf7;&#x5728;&#x8be5;&#x8868;&#x683c;&#x4e2d;&#x586b;&#x5165;&#x72ec;&#x7acb;&#x9700;&#x6c42;&#x9879;&#x7269;&#x6599;&#x7684;&#x9700;&#x6c42;&#x6570;&#x91cf;&#xff0c;&#x6ce8;&#x610f;&#x4e0d;&#x8981;&#x91cd;&#x590d;"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel20">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="&#xff08;&#x8868;&#x683c;&#x9879;&#x4e0d;&#x591f;&#x53ef;&#x4ee5;&#x70b9;&#x51fb;&#x6dfb;&#x52a0;&#x4e00;&#x884c;&#x6309;&#x94ae;&#xff0c;&#x8f93;&#x5165;&#x9519;&#x8bef;&#x53ef;&#x4ee5;&#x9009;&#x4e2d;&#x8be5;&#x884c;&#x9009;&#x62e9;&#x5220;&#x9664;&#x4e00;&#x884c;&#xff09;"/>
               </Properties>
             </Component>
           </SubComponents>
