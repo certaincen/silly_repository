@@ -26,7 +26,7 @@ public class MainFrame extends javax.swing.JFrame {
      * Creates new form MainFrame
      */
     public MainFrame() {
-        gen_table_col_array();  //生成表格的数据
+        //gen_inventory_table_col_array();  //生成表格的数据
         initComponents();
         this.setLocationRelativeTo(null);   //设置为居中
     }
@@ -39,41 +39,37 @@ public class MainFrame extends javax.swing.JFrame {
         jTabbedPane1.setEnabledAt(i, true);
     }
     //生成1~356期的表格生成模型
-    private void gen_table_col_array(){
-        for(int i = 1 ;i <= 30 ; i++){
-            Object [][] tmpArray = new Object[1][i+3];
+    private void gen_inventory_table_col_array(){
+        int period_count = (Integer)period_spinner.getModel().getValue();
+            Object [][] tmpArray = new Object[1][period_count+3];
             //tmpArray = new Object[1][i+3];
-            for (int j = 0; j < i + 3; j++){
-                tmpArray[0][j] = null;
-            }
+            //for (int j = 0; j < period_count + 3; j++){
+            //    tmpArray[0][j] = null;
+            //}
             TwoDArray tmp2D = new TwoDArray(tmpArray);
-            //System.out.println("G");
-            inventory_model_list.add(tmp2D);
-        }
-        //inventory_model_list.add(tmpArray);
-        //System.out.println("First Fuck" + inventory_model_list.size());
-        for (int i = 1; i<= 30; i++){
+            inventory_model_list = tmp2D;
+            
+            //int type_count = (Integer)type_spinner.getModel().getValue();
             String [] nameArray = null;
-            nameArray = new String[i+3];
+            nameArray = new String[period_count+3];
             nameArray[0] = "P-No";
             nameArray[1] = "OH";
             nameArray[2] = "AL";
-            for (int j = 3; j < i +3 ;j++){
+            for (int j = 3; j < period_count +3 ;j++){
                 nameArray[j] = (Integer.toString(j-3));
             }
-            inventory_name_list.add(nameArray);
-        }
-        for (int i = 1; i<=30; i++){
+            inventory_name_list = nameArray;
+
             Class [] classArray = null;
-            classArray = new Class[i+3];
+            classArray = new Class[period_count+3];
             classArray[0] = java.lang.String.class;
             classArray[1] = java.lang.Integer.class;
             classArray[2] = java.lang.Integer.class;
-            for (int j = 3; j < i + 3; j ++){
+            for (int j = 3; j < period_count + 3; j ++){
                 classArray[j] = java.lang.Integer.class;
             }
-            inventory_class_list.add(classArray);
-        }
+            inventory_class_list = classArray;
+        
     }
     private synchronized void gen_inventory_table(){
 
@@ -83,20 +79,88 @@ public class MainFrame extends javax.swing.JFrame {
             final int period_count = (Integer)period_spinner.getModel().getValue();
             if(period_count != 13){
                 inventory_table.setModel(new javax.swing.table.DefaultTableModel(
-                inventory_model_list.get(type_count-1).array,
-                inventory_name_list.get(period_count-1)
+                inventory_model_list.array,
+                inventory_name_list
                 ) {
-                Class[] types = inventory_class_list.get(period_count-1);
+                Class[] types = inventory_class_list;
                 @Override
                 public Class getColumnClass(int columnIndex) {
                     return types [columnIndex];
                 }
                 });
+                DefaultTableModel tbm = (DefaultTableModel) inventory_table.getModel();
+                while(tbm.getRowCount() < type_count){
+                    tbm.addRow((Object[]) null);
+                }
                 inventory_table.repaint();
             }
             }
         });
 
+    }
+    /**
+     * 这个方法用来生成读取结果的mps_table的数据模型，要更换一个新的数据模型
+     * 例如：期数不同的时候，则仿照库存表的做法，setModel到通过这个函数生成的私有变量中正确的那个即可
+     * 表格的行数不变，但是列数会变
+     */
+    private synchronized void gen_mps_table(){
+        int period_count = (Integer)period_spinner.getModel().getValue();
+            Object [][] tmpArray = new Object[7][period_count+1];
+
+            tmpArray[0][0] = "GR";
+            tmpArray[1][0] = "SR";
+            tmpArray[2][0] = "POH";
+            tmpArray[3][0] = "PAB";
+            tmpArray[4][0] = "NR";
+            tmpArray[5][0] = "PORcpt";
+            tmpArray[6][0] = "POR";
+            TwoDArray tmp2D = new TwoDArray(tmpArray);
+            mps_model_list = tmp2D;
+            
+            //int type_count = (Integer)type_spinner.getModel().getValue();
+            String [] nameArray = null;
+            nameArray = new String[period_count+1];
+            nameArray[0] = "Items";
+            nameArray[1] = "Due";
+            for (int j = 2; j < period_count + 1 ;j++){
+                nameArray[j] = (Integer.toString(j-1));
+            }
+            mps_name_list = nameArray;
+
+            Class [] classArray = null;
+            classArray = new Class[period_count + 1];
+            classArray[0] = java.lang.String.class;
+            classArray[1] = java.lang.Integer.class;
+            for (int j = 2; j < period_count + 1; j ++){
+                classArray[j] = java.lang.Integer.class;
+            }
+            mps_class_list = classArray;
+            
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+            int type_count = (Integer)type_spinner.getModel().getValue();
+            final int period_count = (Integer)period_spinner.getModel().getValue();
+            if(period_count != 13){
+                mps_table.setModel(new javax.swing.table.DefaultTableModel(
+                mps_model_list.array,
+                mps_name_list
+                ) {
+                Class[] types = mps_class_list;
+                @Override
+                public Class getColumnClass(int columnIndex) {
+                    return types [columnIndex];
+                }
+                });
+                DefaultTableModel tbm = (DefaultTableModel) inventory_table.getModel();
+                while(tbm.getRowCount() < type_count){
+                    tbm.addRow((Object[]) null);
+                }
+                inventory_table.repaint();
+            }
+            }
+        });
+            
     }
     /**
      * 这个方法用来读取物料主文件中所有的物料编号用于最后显示结果时用户选择下拉框中显示
@@ -184,9 +248,27 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel19 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        get_mpr_result_button = new javax.swing.JButton();
         jLabel23 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        mps_table = new javax.swing.JTable();
+        jLabel25 = new javax.swing.JLabel();
+        type_text = new javax.swing.JTextField();
+        jLabel24 = new javax.swing.JLabel();
+        oh_text = new javax.swing.JTextField();
+        jLabel26 = new javax.swing.JLabel();
+        al_text = new javax.swing.JTextField();
+        jLabel27 = new javax.swing.JLabel();
+        lt_text = new javax.swing.JTextField();
+        jLabel28 = new javax.swing.JLabel();
+        st_text = new javax.swing.JTextField();
+        jLabel29 = new javax.swing.JLabel();
+        ss_text = new javax.swing.JTextField();
+        jLabel30 = new javax.swing.JLabel();
+        lfl_text = new javax.swing.JTextField();
+        home_button = new javax.swing.JButton();
+        quit_button = new javax.swing.JButton();
 
         jTextField1.setText("jTextField1");
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
@@ -336,7 +418,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(view_past_button)
                     .addComponent(new_mpr_button))
-                .addContainerGap(146, Short.MAX_VALUE))
+                .addContainerGap(168, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("用户向导", jPanel1);
@@ -410,7 +492,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(period_spinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(71, 71, 71)
                 .addComponent(fin_init_button)
-                .addContainerGap(110, Short.MAX_VALUE))
+                .addContainerGap(132, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("初始化设置", jPanel2);
@@ -505,7 +587,7 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(fin_item_master_button)))
                 .addGap(44, 44, 44)
                 .addComponent(jLabel21)
-                .addContainerGap(86, Short.MAX_VALUE))
+                .addContainerGap(108, Short.MAX_VALUE))
         );
 
         del_item_master_button.getAccessibleContext().setAccessibleDescription("删除当前选中的一行表格数据");
@@ -609,7 +691,7 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(jLabel16)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel17)))
-                .addContainerGap(127, Short.MAX_VALUE))
+                .addContainerGap(149, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("录入BOM", jPanel4);
@@ -693,7 +775,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(add_inventory_button)
                     .addComponent(del_inventory_button)
                     .addComponent(fin_inventory_button))
-                .addContainerGap(135, Short.MAX_VALUE))
+                .addContainerGap(157, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("录入库存", jPanel5);
@@ -783,29 +865,152 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(47, 47, 47)
                 .addComponent(jLabel20)
-                .addContainerGap(98, Short.MAX_VALUE))
+                .addContainerGap(120, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("录入GR", jPanel6);
 
-        jButton1.setText("查看物料计算结果");
+        get_mpr_result_button.setText("查看物料计算结果");
+        get_mpr_result_button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                get_mpr_result_buttonActionPerformed(evt);
+            }
+        });
 
         jLabel23.setText("请输入想查看的物料项的物料编号，即P-No.");
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        mps_table.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {"GR",  new Integer(0),  new Integer(80),  new Integer(50),  new Integer(100),  new Integer(60),  new Integer(100),  new Integer(70),  new Integer(100),  new Integer(60),  new Integer(100),  new Integer(50),  new Integer(100),  new Integer(50)},
+                {"SR",  new Integer(0),  new Integer(100),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0)},
+                {"POH",  new Integer(0),  new Integer(40),  new Integer(-10),  new Integer(-75),  new Integer(-35),  new Integer(-75),  new Integer(-45),  new Integer(-75),  new Integer(-35),  new Integer(-75),  new Integer(-25),  new Integer(-75),  new Integer(-25)},
+                {"PAB",  new Integer(0),  new Integer(40),  new Integer(25),  new Integer(25),  new Integer(25),  new Integer(25),  new Integer(25),  new Integer(25),  new Integer(25),  new Integer(25),  new Integer(25),  new Integer(25),  new Integer(25)},
+                {"NR",  new Integer(0),  new Integer(0),  new Integer(35),  new Integer(100),  new Integer(60),  new Integer(100),  new Integer(70),  new Integer(100),  new Integer(60),  new Integer(100),  new Integer(50),  new Integer(100),  new Integer(50)},
+                {"PORcpt",  new Integer(0),  new Integer(0),  new Integer(35),  new Integer(100),  new Integer(60),  new Integer(100),  new Integer(70),  new Integer(100),  new Integer(60),  new Integer(100),  new Integer(50),  new Integer(100),  new Integer(50)},
+                {"POR",  new Integer(0),  new Integer(35),  new Integer(100),  new Integer(60),  new Integer(100),  new Integer(70),  new Integer(100),  new Integer(60),  new Integer(100),  new Integer(50),  new Integer(100),  new Integer(50),  new Integer(0)}
+            },
+            new String [] {
+                "Items", "Due", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        mps_table.getTableHeader().setReorderingAllowed(false);
+        jScrollPane5.setViewportView(mps_table);
+        mps_table.getColumnModel().getColumn(0).setHeaderValue("Items");
+        mps_table.getColumnModel().getColumn(1).setHeaderValue("Due");
+        mps_table.getColumnModel().getColumn(2).setHeaderValue("1");
+        mps_table.getColumnModel().getColumn(3).setHeaderValue("2");
+        mps_table.getColumnModel().getColumn(4).setHeaderValue("3");
+        mps_table.getColumnModel().getColumn(5).setHeaderValue("4");
+        mps_table.getColumnModel().getColumn(6).setHeaderValue("5");
+        mps_table.getColumnModel().getColumn(7).setHeaderValue("6");
+        mps_table.getColumnModel().getColumn(8).setHeaderValue("7");
+        mps_table.getColumnModel().getColumn(9).setHeaderValue("8");
+        mps_table.getColumnModel().getColumn(10).setHeaderValue("9");
+        mps_table.getColumnModel().getColumn(11).setHeaderValue("10");
+        mps_table.getColumnModel().getColumn(12).setHeaderValue("11");
+        mps_table.getColumnModel().getColumn(13).setHeaderValue("12");
+
+        jLabel25.setText("的MPR计算结果如下：");
+
+        type_text.setEditable(false);
+        type_text.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                type_textActionPerformed(evt);
+            }
+        });
+
+        jLabel24.setText("OH：");
+
+        jLabel26.setText("AL：");
+
+        jLabel27.setText("LT:");
+
+        jLabel28.setText("ST：");
+
+        jLabel29.setText("SS：");
+
+        jLabel30.setText("LFL：");
+
+        home_button.setText("返回首页");
+
+        quit_button.setText("退出软件");
+        quit_button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                quit_buttonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane5)
+                .addContainerGap())
+            .addGroup(jPanel7Layout.createSequentialGroup()
                 .addGap(45, 45, 45)
                 .addComponent(jLabel23)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 81, Short.MAX_VALUE)
                 .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(91, 91, 91)
-                .addComponent(jButton1)
+                .addComponent(get_mpr_result_button)
                 .addGap(131, 131, 131))
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addGap(83, 83, 83)
+                        .addComponent(type_text, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel25))
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addGap(106, 106, 106)
+                        .addComponent(jLabel24)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(oh_text, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel26)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(al_text, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel27)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lt_text, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel28)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(st_text, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel29)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(ss_text, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel30)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lfl_text, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addGap(208, 208, 208)
+                        .addComponent(home_button)
+                        .addGap(127, 127, 127)
+                        .addComponent(quit_button)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -814,8 +1019,32 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel23)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
-                .addContainerGap(422, Short.MAX_VALUE))
+                    .addComponent(get_mpr_result_button))
+                .addGap(26, 26, 26)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel25)
+                    .addComponent(type_text, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel24)
+                    .addComponent(oh_text, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel26)
+                    .addComponent(al_text, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel27)
+                    .addComponent(lt_text, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel28)
+                    .addComponent(st_text, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel29)
+                    .addComponent(ss_text, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel30)
+                    .addComponent(lfl_text, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(23, 23, 23)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(60, 60, 60)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(home_button)
+                    .addComponent(quit_button))
+                .addContainerGap(111, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("计算结果", jPanel7);
@@ -855,6 +1084,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void fin_init_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fin_init_buttonActionPerformed
         // TODO add your handling code here:
         int now_index = jTabbedPane1.getSelectedIndex();
+        gen_inventory_table_col_array();
         jTabbedPane1.setSelectedIndex(now_index+1);
         deactive_tab(now_index+1);
     }//GEN-LAST:event_fin_init_buttonActionPerformed
@@ -960,8 +1190,26 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         int now_index = jTabbedPane1.getSelectedIndex();
         jTabbedPane1.setSelectedIndex(now_index+1);
+        gen_mps_table();
         deactive_tab(now_index+1);
     }//GEN-LAST:event_fin_gr_buttonActionPerformed
+
+    private void get_mpr_result_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_get_mpr_result_buttonActionPerformed
+        // TODO add your handling code here:
+        //取下拉菜单的数据填入
+        String tmpstr = (String)jComboBox1.getModel().getSelectedItem();
+        type_text.setText(tmpstr);
+    }//GEN-LAST:event_get_mpr_result_buttonActionPerformed
+
+    private void type_textActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_type_textActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_type_textActionPerformed
+
+    private void quit_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quit_buttonActionPerformed
+        // TODO add your handling code here:
+        //System.exit(0);
+        this.dispose();
+    }//GEN-LAST:event_quit_buttonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1021,6 +1269,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton add_gr_button;
     private javax.swing.JButton add_inventory_button;
     private javax.swing.JButton add_item_master_button;
+    private javax.swing.JTextField al_text;
     private javax.swing.JTable bom_table;
     private javax.swing.JButton del_bom_button;
     private javax.swing.JButton del_gr_button;
@@ -1031,10 +1280,11 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton fin_init_button;
     private javax.swing.JButton fin_inventory_button;
     private javax.swing.JButton fin_item_master_button;
+    private javax.swing.JButton get_mpr_result_button;
     private javax.swing.JTable gr_table;
+    private javax.swing.JButton home_button;
     private javax.swing.JTable inventory_table;
     private javax.swing.JTable item_master_table;
-    private javax.swing.JButton jButton1;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JLabel jLabel1;
@@ -1053,7 +1303,14 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -1071,6 +1328,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
@@ -1079,15 +1337,25 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
+    private javax.swing.JTextField lfl_text;
+    private javax.swing.JTextField lt_text;
+    private javax.swing.JTable mps_table;
     private javax.swing.JButton new_mpr_button;
+    private javax.swing.JTextField oh_text;
     private javax.swing.JSpinner period_spinner;
+    private javax.swing.JButton quit_button;
+    private javax.swing.JTextField ss_text;
+    private javax.swing.JTextField st_text;
     private javax.swing.JSpinner type_spinner;
+    private javax.swing.JTextField type_text;
     private javax.swing.JButton view_past_button;
     // End of variables declaration//GEN-END:variables
-    private ArrayList<String[]> inventory_name_list = new ArrayList<String[]>();
-    private ArrayList<TwoDArray> inventory_model_list = new ArrayList<TwoDArray>();
-    private ArrayList<Class []> inventory_class_list = new ArrayList<Class[]>();
+    private String[] inventory_name_list ;
+    private TwoDArray inventory_model_list;
+    private Class [] inventory_class_list ;
+    private TwoDArray mps_model_list ;
+    private Class [] mps_class_list ;
+    private String[] mps_name_list  ;
     
     
-    ;
 }
