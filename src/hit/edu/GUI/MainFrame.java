@@ -169,6 +169,46 @@ public class MainFrame extends javax.swing.JFrame {
         jComboBox1.repaint();
     }
     /**
+     * 从数据库读入并重新生成BOM表
+     */
+    private synchronized void gen_db_bom_table(){
+            int bom_count = db_bom_list.size();
+            Object [][] tmpArray = new Object[bom_count][3];
+
+            TwoDArray tmp2D = new TwoDArray(tmpArray);
+
+            String [] nameArray = null;
+            nameArray = new String[3];
+            nameArray[0] = "Parent";
+            nameArray[1] = "Comp";
+            nameArray[2] = "Q-P";
+
+            Class [] classArray = null;
+            classArray = new Class[3];
+            classArray[0] = java.lang.String.class;
+            classArray[1] = java.lang.String.class;
+            classArray[2] = java.lang.Integer.class;
+            db_bom_table_class_list = classArray;
+            bom_table.setModel(new javax.swing.table.DefaultTableModel(
+            tmp2D.array,
+            nameArray
+            ) {
+            Class[] types = db_bom_table_class_list;
+            @Override
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+            });
+            bom_table.repaint();
+            int i = 0;
+            for( BOM item : db_bom_list){
+                bom_table.setValueAt((String) item.getFather(),i,0);
+                bom_table.setValueAt((String) item.getChild(),i,1);
+                bom_table.setValueAt((Integer) item.getQP(),i,2);
+                i++;
+            }
+    }
+    /**
      * 从从数据库读取物料数量、周期数、以及其他全部数据
      */
     private void db_init_frame(){
@@ -180,11 +220,10 @@ public class MainFrame extends javax.swing.JFrame {
         
         //然后读出物料主文件,并刷新
         db_material_list =  db_client.Material_QueryAll();
-        gen_material_table(db_material_list);
-                 
-       
+        gen_db_material_table(db_material_list);
         //然后录入BOM
-        
+        db_bom_list = db_client.BOM_Query();
+        gen_db_bom_table();
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -1113,7 +1152,7 @@ public class MainFrame extends javax.swing.JFrame {
      * 通过从数据库读入的物料主文件列表重新生成表格
      * @param m_list 
      */
-    private synchronized void gen_material_table(ArrayList<Material> m_list){
+    private synchronized void gen_db_material_table(ArrayList<Material> m_list){
             Object [][] tmpArray = new Object[db_type_count][7];
 
             TwoDArray tmp2D = new TwoDArray(tmpArray);
@@ -1439,4 +1478,6 @@ public class MainFrame extends javax.swing.JFrame {
     private DBFunc db_client = new DBFunc();
     private ArrayList<Material> db_material_list = new ArrayList<Material>();
     private Class [] db_item_master_class_list ;
+    private ArrayList<BOM> db_bom_list = new ArrayList<BOM>();
+    private Class [] db_bom_table_class_list;
 }
