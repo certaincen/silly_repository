@@ -72,30 +72,12 @@ public class Test {
 	//	tmp.add(3, 0);
 		tmpF[1] = 1000;
 		f = new Inventory("F", 100, 0, tmpF);
-		HashMap<String, Inventory> inventoryMap = new HashMap<String, Inventory>();
-		inventoryMap.put("A", a);
-		inventoryMap.put("B", b);
-		inventoryMap.put("C", c);
-		inventoryMap.put("D", d);
-		inventoryMap.put("E", e);
-		inventoryMap.put("F", f);
-		DBFunc dbfunc = new DBFunc();
-
-		
-		mA = dbfunc.MPS_Query("A");
-		mB = dbfunc.MPS_Query("B");
-		mC = dbfunc.MPS_Query("C");
-		mD = dbfunc.MPS_Query("D");
-		mE = dbfunc.MPS_Query("E");
-		mF = dbfunc.MPS_Query("F");
-		mA.show();
-		mB.show();
-		mC.show();
-		mD.show();
-		mE.show();
-		mF.show();
-		
-
+                db_client.Inventory_Insert(a);
+                db_client.Inventory_Insert(b);
+                db_client.Inventory_Insert(c);
+                db_client.Inventory_Insert(d);
+                db_client.Inventory_Insert(e);
+                db_client.Inventory_Insert(f);
 	}
 
 }
