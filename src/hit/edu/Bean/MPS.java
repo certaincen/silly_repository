@@ -62,9 +62,16 @@ public class MPS {
 		ST = m.getST();
 		
 	}
-	public MPS(String mName)
+	public MPS(String mName, int t)
 	{
 		Name = mName;
+		int[] GR = new int[t];
+		int[] SR = new int[t];
+		int[] POH = new int[t];
+		int[] PAB = new int[t];
+		int[] NR = new int[t];
+		int[] PORC = new int[t];
+		int[] POR = new int[t];
 	}
 	public MPS()
 	{

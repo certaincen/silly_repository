@@ -79,14 +79,9 @@ public class Test {
 		inventoryMap.put("D", d);
 		inventoryMap.put("E", e);
 		inventoryMap.put("F", f);
-		
-		CreateTree creat = new CreateTree();
-		TreeNode root = creat.createTree(bom_array, m, inventoryMap);
-		
-		CalculateMPS cal = new CalculateMPS();
-		cal.calculateMPS(root);
-		root.writetoDB();
 		DBFunc dbfunc = new DBFunc();
+
+		
 		mA = dbfunc.MPS_Query("A");
 		mB = dbfunc.MPS_Query("B");
 		mC = dbfunc.MPS_Query("C");

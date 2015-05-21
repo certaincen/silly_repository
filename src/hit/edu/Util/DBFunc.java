@@ -318,7 +318,7 @@ public class DBFunc {
 	{
 		ArrayList<Inventory> inventory_list = new ArrayList<Inventory>();
 		//ArrayList<Integer> schedule = new ArrayList<Integer>();
-		int[] schedule = new int[13];
+		int[] schedule;
 		sql = "select * from inventory;";			
 		try 
 		{
@@ -332,6 +332,7 @@ public class DBFunc {
 				i.setAL(rs.getInt("AL"));
 				
 				String[] strs = rs.getString("Schedule").split(" ");
+				schedule = new int[strs.length];
 				for(int k=0 ; k<strs.length ; k++)
 					schedule[k] = Integer.parseInt(strs[k]);
 					//schedule.add(Integer.parseInt(strs[k]));

@@ -9,7 +9,12 @@ import hit.edu.Bean.Material;
 import hit.edu.Entity.TreeNode;
 
 public class CalculateMPS {
-	public final static int T = 12;
+	//public final static int T = 12;
+	public int T;
+	public CalculateMPS(int t)
+	{
+		T = t;
+	}
 	public void mpsDecompose(TreeNode root, Queue<TreeNode> q)
 	{
 		for (TreeNode s:root.getSon())

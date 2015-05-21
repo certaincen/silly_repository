@@ -17,14 +17,14 @@ public class CreateTree {
 	{
 		return NodeMap;
 	}
-	public TreeNode createTree(BOM[] bom, Material[] material, HashMap<String, Inventory> inventoryMap)
+	public TreeNode createTree(BOM[] bom, Material[] material, HashMap<String, Inventory> inventoryMap, int t)
 	{
 		TreeNode root = new TreeNode();
 		NodeMap.put("root", root);
 		//Collections.sort(material);
 		for (Material i:material)
 		{
-			TreeNode tmp = new TreeNode(i,new MPS(i.getName()));
+			TreeNode tmp = new TreeNode(i,new MPS(i.getName(), t));
 			MPS tmpMps = tmp.getMPSNode();
 			tmpMps.copyFromMaterialAndInventory(i, inventoryMap.get(i.getName()));
 			NodeMap.put(i.getName(), tmp);
@@ -44,10 +44,10 @@ public class CreateTree {
 			s.setInDegree(s.getInDegree()+1);
 			s.setFather(f);
 		}
-		TreeNode node = NodeMap.get("A");
-		MPS mpsNode = node.getMPSNode();
+	//	TreeNode node = NodeMap.get("A");
+	//	MPS mpsNode = node.getMPSNode();
 	//	node.setIsCalFlag(1);
-		int[] gr = {0, 80, 50, 100, 60, 100, 70, 100, 60, 100, 50, 100, 50};
+	/*	int[] gr = {0, 80, 50, 100, 60, 100, 70, 100, 60, 100, 50, 100, 50};
 		int[] sr = {0, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		int[] poh = {0, 40, -10, -75, -35, -75, -45, -75, -35, -75, -25, -75, -25};
 		int[] pab = {0, 40, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25};
@@ -56,15 +56,16 @@ public class CreateTree {
 		int[] por = {0, 35, 100, 60, 100, 70, 100, 60, 100, 50, 100, 50, 0};
 		mpsNode.setGR(gr);
 		mpsNode.setSR(sr);
+		*/
 	//	mpsNode.setPOH(poh);
 	//	mpsNode.setPAB(pab);
 	//	mpsNode.setNR(nr);
 	//	mpsNode.setPORC(porc);
 	//	mpsNode.setPOR(por);
-		 node = NodeMap.get("B");
-		 mpsNode = node.getMPSNode();
+	//	 node = NodeMap.get("B");
+	//	 mpsNode = node.getMPSNode();
 	//	 node.setIsCalFlag(1);
-		int[] gr1 = {0, 70, 100, 50, 90, 60, 110, 60, 100, 50, 100, 50, 100};
+	/*	int[] gr1 = {0, 70, 100, 50, 90, 60, 110, 60, 100, 50, 100, 50, 100};
 		int[] sr1 = {0, 50, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		int[] poh1 = {0, 20, 20, -30, -70, -40, -90, -40, -80, -30, -80, -30, -80};
 		int[] pab1 = {0, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20};
@@ -73,6 +74,8 @@ public class CreateTree {
 		int[] por1 = {0, 0, 50, 90, 60, 110, 60, 100, 50, 100, 50, 100, 0};
 		mpsNode.setGR(gr1);
 		//mpsNode.setSR(sr1);
+		 
+		 */
 	//	mpsNode.setPOH(poh1);
 	//	mpsNode.setPAB(pab1);
 	//	mpsNode.setNR(nr1);

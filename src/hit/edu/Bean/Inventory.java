@@ -16,7 +16,7 @@ public class Inventory {
 	private String Name;
 	private int OH;
 	private int AL;
-	private int[] Schedule = new int[13];
+	private int[] Schedule;
 	public String getName() {
 		return Name;
 	}
