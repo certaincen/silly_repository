@@ -33,11 +33,12 @@ public class CoreCalculate {
 		for (TreeNode node : root.getSon())
 		{
 			MPS mpsNode = node.getMPSNode();
-			mpsNode = dbfunc.MPS_Query(mpsNode.getName());
+			mpsNode.copyMPSGR(dbfunc.MPS_Query(mpsNode.getName()));
 		}
 		CalculateMPS cal = new CalculateMPS(T);
 		cal.calculateMPS(root);
 		root.writetoDB();
+
 	}
 
 }

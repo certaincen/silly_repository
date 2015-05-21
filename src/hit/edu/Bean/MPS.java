@@ -239,4 +239,9 @@ public class MPS {
 	public String getName() {
 		return Name;
 	}
+	public void copyMPSGR(MPS mps_Query) {
+		// TODO Auto-generated method stub
+		this.GR = mps_Query.getGR().clone();
+		
+	}
 }

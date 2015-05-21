@@ -29,7 +29,7 @@ public class CalculateMPS {
 			//int curPAB = curMPS.getOH() - curMPS.getAL() + max(curMPS.getSRatIndex(0), 0);
 			int curPAB = curMPS.getOH() - curMPS.getAL() + max(curMPS.getSR()[0], 0);
 			curMPS.setPAB(curPAB, 0);
-			for (int i=1;i<=T;i++)
+			for (int i=1;i<T;i++)
 			{
 				if (i==1)
 				{
@@ -82,7 +82,7 @@ public class CalculateMPS {
 			
 			}
 			System.out.println();
-			for (int i=1;i<=T;i++)
+			for (int i=1;i<T;i++)
 				generateNRToSon(s, i);
 			s.setIsCalFlag(1);
 			//outputMPS(curMPS);
