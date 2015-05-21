@@ -135,7 +135,7 @@ public class MainFrame extends javax.swing.JFrame {
             
             int type_count = (Integer)type_spinner.getModel().getValue();
             period_count = (Integer)period_spinner.getModel().getValue();
-            if(period_count != 13){
+            if(period_count != 13 || db_read){
                 mps_table.setModel(new javax.swing.table.DefaultTableModel(
                 mps_model_list.array,
                 mps_name_list
@@ -146,13 +146,18 @@ public class MainFrame extends javax.swing.JFrame {
                     return types [columnIndex];
                 }
                 });
-                DefaultTableModel tbm = (DefaultTableModel) inventory_table.getModel();
+                DefaultTableModel tbm = (DefaultTableModel) mps_table.getModel();
                 while(tbm.getRowCount() < type_count){
                     tbm.addRow((Object[]) null);
                 }
-                inventory_table.repaint();
             }
    
+    }
+    /**
+     * 调用gen_mps_table生成模型，然后填充数据，首先要从数据库读出MPS的ArrayList
+     */
+    private void gen_db_mps_table(){
+        
     }
     /**
      * 这个方法用来读取物料主文件中所有的物料编号用于最后显示结果时用户选择下拉框中显示
@@ -228,8 +233,52 @@ public class MainFrame extends javax.swing.JFrame {
             }
             i++;
         }
-        //db_inventory_model.setValueAt("CaoNiMa", 0, 0);
-        //inventory_table.repaint();
+    }
+    /**
+     * 生成GR table，依据输入的不同期数生成不同的模型
+     * p_count 期数
+     */
+    private void gen_gr_table(int t_count,int p_count){
+        //首先生成模型
+            Object [][] tmpArray = new Object[t_count][p_count+1];
+            TwoDArray tmp2D = new TwoDArray(tmpArray);
+            
+            //int type_count = (Integer)type_spinner.getModel().getValue();
+            String [] nameArray = null;
+            nameArray = new String[p_count+1];
+            nameArray[0] = "P-No";
+            nameArray[1] = "Past Due";
+            for (int j = 2; j < p_count +1 ;j++){
+                nameArray[j] = (Integer.toString(j-1));
+            }
+
+            Class [] classArray = null;
+            classArray = new Class[p_count+1];
+            classArray[0] = java.lang.String.class;
+            for (int j = 1; j < p_count + 1; j ++){
+                classArray[j] = java.lang.Integer.class;
+            }
+            db_gr_table_class_list = classArray;
+       //然后更换模型
+            int period_count = (Integer) period_spinner.getModel().getValue();
+            if(period_count != 13 || db_read){
+                gr_table.setModel(new javax.swing.table.DefaultTableModel(
+                tmp2D.array,
+                nameArray
+                ) {
+                Class[] types = db_gr_table_class_list;
+                @Override
+                public Class getColumnClass(int columnIndex) {
+                    return types [columnIndex];
+                }
+                });
+            }
+    }
+    /**
+     * 从数据库中读出第一阶的物料的mps数据，生成GR表
+     */
+    private void gen_db_gr_table(){
+        gen_gr_table(db_type_count,db_period_count);
         
     }
     /**
@@ -244,16 +293,20 @@ public class MainFrame extends javax.swing.JFrame {
         type_spinner.getModel().setValue(db_type_count);
         period_spinner.getModel().setValue(db_period_count);
         //然后，让跳转按钮disabled
+        //**************************
+        
         
         //然后读出物料主文件,并刷新
         db_material_list =  db_client.Material_QueryAll();
         gen_db_material_table(db_material_list);
-        //然后录入BOM
+        //然后读出BOM
         db_bom_list = db_client.BOM_Query();
         gen_db_bom_table();
-        //然后录入库存表
+        //然后读出库存表
         db_inventory_list = db_client.Inventory_QueryAll();
         gen_db_inventory_table();
+        //然后读出GR
+        gen_db_gr_table();
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -861,17 +914,17 @@ public class MainFrame extends javax.swing.JFrame {
 
         gr_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"A",  new Integer(0)},
-                {"B",  new Integer(0)},
-                {null, null},
-                {null, null}
+                {"A",  new Integer(0),  new Integer(80),  new Integer(50),  new Integer(100),  new Integer(60),  new Integer(100),  new Integer(70),  new Integer(100),  new Integer(60),  new Integer(100),  new Integer(50),  new Integer(100),  new Integer(50)},
+                {"B",  new Integer(0),  new Integer(100),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0)},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "P-No", "GR"
+                "P-No", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Integer.class
+                java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -910,41 +963,39 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addContainerGap(196, Short.MAX_VALUE)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel19)
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(113, 113, 113)
-                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(del_gr_button)
-                                    .addComponent(add_gr_button)
-                                    .addComponent(fin_gr_button))))
-                        .addGap(189, 189, 189))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                        .addComponent(jLabel20)
-                        .addGap(169, 169, 169))))
+                .addContainerGap(50, Short.MAX_VALUE)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel20)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(jLabel19)
+                        .addGap(39, 39, 39))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 534, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(56, 56, 56)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(add_gr_button)
+                    .addComponent(del_gr_button)
+                    .addComponent(fin_gr_button))
+                .addGap(52, 52, 52))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(52, 52, 52)
                 .addComponent(jLabel19)
-                .addGap(37, 37, 37)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
+                        .addGap(61, 61, 61)
                         .addComponent(add_gr_button)
-                        .addGap(33, 33, 33)
+                        .addGap(32, 32, 32)
                         .addComponent(del_gr_button)
                         .addGap(36, 36, 36)
                         .addComponent(fin_gr_button))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(47, 47, 47)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(45, 45, 45)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 81, Short.MAX_VALUE)
                 .addComponent(jLabel20)
-                .addContainerGap(120, Short.MAX_VALUE))
+                .addGap(78, 78, 78))
         );
 
         jTabbedPane1.addTab("录入GR", jPanel6);
@@ -1510,6 +1561,7 @@ public class MainFrame extends javax.swing.JFrame {
     private Class [] db_item_master_class_list ;
     private ArrayList<BOM> db_bom_list = new ArrayList<BOM>();
     private Class [] db_bom_table_class_list;
+    private Class [] db_gr_table_class_list;
     private ArrayList<Inventory> db_inventory_list = new ArrayList<>();
     private boolean db_read = false;
     
