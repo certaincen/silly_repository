@@ -1320,7 +1320,7 @@
                               <EmptySpace min="-2" pref="208" max="-2" attributes="0"/>
                               <Component id="home_button" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="127" max="-2" attributes="0"/>
-                              <Component id="jButton2" min="-2" max="-2" attributes="0"/>
+                              <Component id="quit_button" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
@@ -1361,7 +1361,7 @@
                       <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="home_button" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jButton2" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="quit_button" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace pref="111" max="32767" attributes="0"/>
                   </Group>
@@ -1673,11 +1673,17 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="&#x8fd4;&#x56de;&#x9996;&#x9875;"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="home_buttonActionPerformed"/>
+              </Events>
             </Component>
-            <Component class="javax.swing.JButton" name="jButton2">
+            <Component class="javax.swing.JButton" name="quit_button">
               <Properties>
                 <Property name="text" type="java.lang.String" value="&#x9000;&#x51fa;&#x8f6f;&#x4ef6;"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="quit_buttonActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
