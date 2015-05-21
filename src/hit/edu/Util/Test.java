@@ -100,7 +100,9 @@ public class Test {
 		
 
 		CoreCalculate core = new CoreCalculate(aM, aB, iM, 13);
-		core.calculate();
+		ArrayList<MPS> result = core.calculate();
+		for (MPS i: result)
+			i.show();
 		/*for (Material i : m)
 		{
 			MPS mps = db_client.MPS_Query(i.getName());

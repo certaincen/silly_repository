@@ -25,8 +25,10 @@ public class CoreCalculate {
 		}
 		
 	}
-	public void calculate()
+	public ArrayList<MPS> calculate()
 	{
+		ArrayList<MPS> result = new ArrayList<MPS>();
+		HashMap<String, MPS> mpsMap = new HashMap<String, MPS>();
 		CreateTree creat = new CreateTree();
 		TreeNode root = creat.createTree(bom_array, m, inventoryMap, T);
 		DBFunc dbfunc = new DBFunc();
@@ -37,7 +39,13 @@ public class CoreCalculate {
 		}
 		CalculateMPS cal = new CalculateMPS(T);
 		cal.calculateMPS(root);
-		root.writetoDB();
+		
+		root.getAllUniqueValue(mpsMap);
+		for (String name : mpsMap.keySet())
+		{
+			result.add(mpsMap.get(name));
+		}
+		return result;
 
 	}
 
