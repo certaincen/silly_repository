@@ -58,6 +58,42 @@ public class DBFunc {
 		return null;
 	}
 	
+	public boolean BOM_Exist(BOM bom)
+	{
+		sql = "select * from bom where Father = ? and Child = ?";
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, bom.getFather());
+			pstmt.setString(2, bom.getChild());
+			rs = pstmt.executeQuery();
+			if(rs.next())
+				return true;
+			else
+				return false;
+		}
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public void BOM_Update(BOM bom)
+	{
+		sql = "update bom set QP=? where Father=? and Child=?;";
+		try{
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, bom.getQP());
+			pstmt.setString(2, bom.getFather());
+			pstmt.setString(3, bom.getChild());
+			pstmt.executeUpdate();
+		}
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+	}
+	
 	public void Material_Insert(Material m)
 	{
 		sql = "insert into material values(?,?,?,?,?,?,?);";
@@ -77,13 +113,13 @@ public class DBFunc {
 		{
 			e.printStackTrace();
 		}
-		
 	}
 	
+	//按照产品名查询
 	public Material Material_Query(String product){
 		int lsr;
 		Material m = new Material();
-		sql = "select * from material where name = ?;";
+		sql = "select * from material where Name = ?;";
 		try 
 		{
 			pstmt = conn.prepareStatement(sql);
@@ -112,6 +148,83 @@ public class DBFunc {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	//查询material表所有
+	public ArrayList<Material> Material_QueryAll(){
+		int lsr;
+		ArrayList<Material> material_list = new ArrayList<Material>();
+		sql = "select * from material;";
+		try 
+		{
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next())
+			{
+			Material m = new Material();
+			m.setName(rs.getString("name"));
+			m.setLT(rs.getInt("LT"));
+			m.setST(rs.getInt("ST"));
+			m.setSS(rs.getInt("SS"));
+			m.setLLC(rs.getInt("LLC"));
+			m.setLS(rs.getInt("LS"));
+			
+			lsr = rs.getInt("LSR");
+			if(lsr == 1)
+				m.setLSR("LFL");
+			else if(lsr == 2)
+				m.setLSR("FOQ");
+			else
+				m.setLSR("POQ");
+			
+			material_list.add(m);
+			}
+			return material_list;
+		} 
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+			return null;
+	}
+	
+	public boolean Material_Exist(String product)
+	{
+		sql = "select * from material where Name = ?;";
+		try 
+		{
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, product);
+			rs = pstmt.executeQuery();
+			if(rs.next())
+				return true;
+			else
+				return false;
+		} 
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public void Material_Update(Material m)
+	{
+		sql = "update material set LT=?,ST=?,SS=?,LLC=?,LSR=?,LS=? where Name=?;";
+		try 
+		{
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, m.getLT());
+			pstmt.setInt(2, m.getST());
+			pstmt.setInt(3, m.getSS());
+			pstmt.setInt(4, m.getLLC());
+			pstmt.setInt(5, m.getLSR());
+			pstmt.setInt(6, m.getLS());
+			pstmt.setString(7, m.getName());
+			pstmt.executeUpdate();
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	public void Inventory_Insert(Inventory i)
@@ -180,14 +293,105 @@ public class DBFunc {
 		}
 		return null;
 	}
-
-//	周期查询，ppt上13
-	public int Period_Query()
+	
+	public ArrayList<Inventory> Inventory_QueryAll()
 	{
+		ArrayList<Inventory> inventory_list = new ArrayList<Inventory>();
+		//ArrayList<Integer> schedule = new ArrayList<Integer>();
+		int[] schedule = new int[13];
 		sql = "select * from inventory;";			
 		try 
 		{
 			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next())
+			{
+				Inventory i = new Inventory();
+				i.setName(rs.getString("name"));
+				i.setOH(rs.getInt("OH"));
+				i.setAL(rs.getInt("AL"));
+				
+				String[] strs = rs.getString("Schedule").split(" ");
+				for(int k=0 ; k<strs.length ; k++)
+					schedule[k] = Integer.parseInt(strs[k]);
+					//schedule.add(Integer.parseInt(strs[k]));
+				i.setSchedule(schedule);
+				
+				inventory_list.add(i);
+			}
+			return inventory_list;
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public boolean Inventory_Exist(String product)
+	{
+		sql = "select * from inventory where Name = ?;";			
+		try 
+		{
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, product);
+			rs = pstmt.executeQuery();
+			if(rs.next())
+				return true;
+			else
+				return false;
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public void Inventory_Update(Inventory i)
+	{
+		int[] num;
+		String str;
+		//Iterator<Integer> it;
+		sql = "update inventory set OH=?,AL=?,Schedule=? where Name = ?;";
+		try 
+		{
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, i.getOH());
+			pstmt.setInt(2, i.getAL());
+			
+		//	it = i.getSchedule().iterator();
+			str="";
+			num = i.getSchedule();
+			for (int j=0;j<num.length;j++)
+				str += (num[j]+" ");
+			
+		/*  while(it.hasNext())
+			{
+				num = it.next();
+				str+=num+" ";
+			}
+			*/
+			pstmt.setString(3, str);
+			pstmt.setString(4, i.getName());
+			
+			pstmt.executeUpdate();
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+	}
+
+//	周期查询，ppt上13
+//	若要再建一个项目，则要对项目编写id
+	public int Period_Query(String product)
+	{
+		sql = "select * from inventory where Name=?;";			
+		try
+		{
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, product);
 			rs = pstmt.executeQuery();
 			if(rs.next())
 			{	
@@ -201,7 +405,6 @@ public class DBFunc {
 		}
 		return 0;
 	}
-
 
 //	p为周期数
 	public int MPS_Insert(MPS mps,int p)
@@ -294,8 +497,6 @@ public class DBFunc {
 		}
 		return null;
 	}
-
-
 	
 //	p为周期
 	public void MPS_Update(MPS mps,int p)
