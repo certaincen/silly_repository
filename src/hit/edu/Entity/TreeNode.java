@@ -87,7 +87,7 @@ public class TreeNode {
 			{
 				dbfunc.MPS_Update(i.getMPSNode(), i.getMPSNode().getPAB().length);
 			}
-			//i.MPSNode.show();
+			i.MPSNode.show();
 			i.writetoDB();
 		}
 	}
