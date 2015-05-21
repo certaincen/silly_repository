@@ -16,7 +16,24 @@ public class DBFunc {
 	
 	Database db = new Database();
 	Connection conn = db.DatabaseConn();
-	
+	public void DeleteAllTable()
+	{
+		String[] deleteSql = {"delete from mps;", "delete from bom;", "delete from material;", "delete from inventory;"};
+		for (String i:deleteSql)
+		DeleteTable(i);
+		
+	}
+	public void DeleteTable(String deleteSql)
+	{
+		try{
+			pstmt = conn.prepareStatement(deleteSql);
+			pstmt.executeUpdate();
+		}
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+	}
 	public void BOM_Insert(BOM bom)
 	{
 		sql = "insert into bom values (?,?,?);";

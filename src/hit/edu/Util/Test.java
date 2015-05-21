@@ -103,6 +103,7 @@ public class Test {
 		ArrayList<MPS> result = core.calculate();
 		for (MPS i: result)
 			i.show();
+		db_client.DeleteAllTable();
 		/*for (Material i : m)
 		{
 			MPS mps = db_client.MPS_Query(i.getName());
