@@ -960,7 +960,7 @@ public class MainFrame extends javax.swing.JFrame {
         gr_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {"A",  new Integer(0),  new Integer(80),  new Integer(50),  new Integer(100),  new Integer(60),  new Integer(100),  new Integer(70),  new Integer(100),  new Integer(60),  new Integer(100),  new Integer(50),  new Integer(100),  new Integer(50)},
-                {"B",  new Integer(0),  new Integer(100),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0)}
+                {"B",  new Integer(0),  new Integer(70),  new Integer(100),  new Integer(50),  new Integer(90),  new Integer(60),  new Integer(110),  new Integer(60),  new Integer(100),  new Integer(50),  new Integer(100),  new Integer(50),  new Integer(100)}
             },
             new String [] {
                 "P-No", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"
@@ -1504,16 +1504,21 @@ public class MainFrame extends javax.swing.JFrame {
         ArrayList<MPS> aG = read_gr_table();
 
        //这里只添加MPS? 滚蛋吧，太危险了
+       //然后，删除数据库中已有的数据
+       db_client.DeleteAllTable();
        for( MPS mpsNode : aG){
            db_client.MPS_Insert(mpsNode, mpsNode.getGR().length);
        }
-       //然后，删除数据库中已有的数据
-       db_client.DeleteAllTable();
        CoreCalculate core = new CoreCalculate(aM, aB, aI, period_count); 
        ArrayList<MPS> result = core.calculate();
        for ( MPS re : result){
-           db_client.MPS_Insert(re, re.getGR().length);
-       }       
+           int status = db_client.MPS_Insert(re, re.getGR().length);
+           if (status == -1){
+               db_client.MPS_Update(re, re.getGR().length);
+           }
+       }  
+       //设置一个db_read标志位试试 failed
+       //db_read = true;
        //然后，把读出的数据一条条添加到数据库里
        //添加物料主文件
        for (Material m : aM){
@@ -1535,6 +1540,10 @@ public class MainFrame extends javax.swing.JFrame {
         gen_mps_table();
         jTabbedPane1.setSelectedIndex(now_index+1);
         //gen_mps_table();
+        db_type_count = db_client.Material_Num();
+        db_period_count = db_client.Period_Query();
+        type_spinner.getModel().setValue(db_type_count);
+        period_spinner.getModel().setValue(db_period_count);
         deactive_tab(now_index+1);
     }//GEN-LAST:event_fin_gr_buttonActionPerformed
 

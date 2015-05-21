@@ -1191,51 +1191,51 @@
                         </Column>
                         <Column editable="true" title="1" type="java.lang.Integer">
                           <Data value="80"/>
-                          <Data value="100"/>
+                          <Data value="70"/>
                         </Column>
                         <Column editable="true" title="2" type="java.lang.Integer">
                           <Data value="50"/>
-                          <Data value="0"/>
+                          <Data value="100"/>
                         </Column>
                         <Column editable="true" title="3" type="java.lang.Integer">
                           <Data value="100"/>
-                          <Data value="0"/>
+                          <Data value="50"/>
                         </Column>
                         <Column editable="true" title="4" type="java.lang.Integer">
                           <Data value="60"/>
-                          <Data value="0"/>
+                          <Data value="90"/>
                         </Column>
                         <Column editable="true" title="5" type="java.lang.Integer">
                           <Data value="100"/>
-                          <Data value="0"/>
+                          <Data value="60"/>
                         </Column>
                         <Column editable="true" title="6" type="java.lang.Integer">
                           <Data value="70"/>
-                          <Data value="0"/>
+                          <Data value="110"/>
                         </Column>
                         <Column editable="true" title="7" type="java.lang.Integer">
                           <Data value="100"/>
-                          <Data value="0"/>
+                          <Data value="60"/>
                         </Column>
                         <Column editable="true" title="8" type="java.lang.Integer">
                           <Data value="60"/>
-                          <Data value="0"/>
+                          <Data value="100"/>
                         </Column>
                         <Column editable="true" title="9" type="java.lang.Integer">
                           <Data value="100"/>
-                          <Data value="0"/>
+                          <Data value="50"/>
                         </Column>
                         <Column editable="true" title="10" type="java.lang.Integer">
                           <Data value="50"/>
-                          <Data value="0"/>
+                          <Data value="100"/>
                         </Column>
                         <Column editable="true" title="11" type="java.lang.Integer">
                           <Data value="100"/>
-                          <Data value="0"/>
+                          <Data value="50"/>
                         </Column>
                         <Column editable="true" title="12" type="java.lang.Integer">
                           <Data value="50"/>
-                          <Data value="0"/>
+                          <Data value="100"/>
                         </Column>
                       </Table>
                     </Property>
