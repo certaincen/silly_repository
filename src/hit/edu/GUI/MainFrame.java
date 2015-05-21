@@ -4,6 +4,7 @@
  */
 package hit.edu.GUI;
 
+import hit.edu.Bean.*;
 import java.util.ArrayList;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -15,7 +16,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-
+import hit.edu.Util.*;
 /**
  *
  * @author Noah
@@ -42,10 +43,6 @@ public class MainFrame extends javax.swing.JFrame {
     private void gen_inventory_table_col_array(){
         int period_count = (Integer)period_spinner.getModel().getValue();
             Object [][] tmpArray = new Object[1][period_count+3];
-            //tmpArray = new Object[1][i+3];
-            //for (int j = 0; j < period_count + 3; j++){
-            //    tmpArray[0][j] = null;
-            //}
             TwoDArray tmp2D = new TwoDArray(tmpArray);
             inventory_model_list = tmp2D;
             
@@ -175,6 +172,22 @@ public class MainFrame extends javax.swing.JFrame {
         DefaultComboBoxModel cm = new DefaultComboBoxModel(vt);
         jComboBox1.setModel(cm);
         jComboBox1.repaint();
+    }
+    /**
+     * 从从数据库读取物料数量、周期数、以及其他全部数据
+     */
+    private void db_init_frame(){
+        //首先，设定周期数
+        db_type_count = db_client.Material_Num();
+        db_period_count = db_client.Period_Query();
+        type_spinner.getModel().setValue(db_type_count);
+        period_spinner.getModel().setValue(db_period_count);
+        
+        //然后读出物料主文件,并刷新
+        db_material_list =  db_client.Material_QueryAll();
+        gen_material_table(db_material_list);
+        //然后录入BOM
+        
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -1067,10 +1080,16 @@ public class MainFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+/**
+ * 在这里从数据库里读出数据，更新该界面中的所有数据
+ * @param evt 
+ */
     private void view_past_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_view_past_buttonActionPerformed
         // TODO add your handling code here:
         jTabbedPane1.setSelectedIndex(6);
+
+        
+        
     }//GEN-LAST:event_view_past_buttonActionPerformed
 
     private void new_mpr_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_new_mpr_buttonActionPerformed
@@ -1094,7 +1113,57 @@ public class MainFrame extends javax.swing.JFrame {
         jTabbedPane1.setSelectedIndex(now_index+1);
         deactive_tab(now_index+1);
     }//GEN-LAST:event_fin_init_buttonActionPerformed
+    /**
+     * 通过从数据库读入的物料主文件列表重新生成表格
+     * @param m_list 
+     */
+    private void gen_material_table(ArrayList<Material> m_list){
+        Object [][] tmpArray = new Object[db_type_count][7];
+        TwoDArray tmp2D = new TwoDArray(tmpArray);
+        //int type_count = (Integer)type_spinner.getModel().getValue();
+        String [] nameArray = null;
+        nameArray = new String[db_period_count+3];
+        nameArray[0] = "P-No.";
+        nameArray[1] = "LT";
+        nameArray[2] = "ST";
+        nameArray[3] = "ST";
+        nameArray[4] = "LLC";
+        nameArray[5] = "LSR";
+        nameArray[6] = "LS";
 
+        Class [] classArray = null;
+        classArray = new Class[7];
+        classArray[0] = java.lang.String.class;
+        classArray[1] = java.lang.Integer.class;
+        classArray[2] = java.lang.Integer.class;
+        classArray[3] = java.lang.Integer.class;
+        classArray[4] = java.lang.Integer.class;
+        classArray[5] = java.lang.String.class;
+        classArray[6] = java.lang.Integer.class;
+        db_item_master_class_list = classArray;
+        item_master_table.setModel(new javax.swing.table.DefaultTableModel(
+            tmp2D.array,
+            nameArray
+            ) {
+            Class[] types = db_item_master_class_list;
+            @Override
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+            });
+        int i = 0;
+        //填充数据
+        for ( Material item : m_list){
+            item_master_table.setValueAt(item.getName(), i, 0);
+            item_master_table.setValueAt(item.getLT(),i,0);
+            item_master_table.setValueAt(item.getST(),i,0);
+            item_master_table.setValueAt(item.getSS(),i,0);
+            item_master_table.setValueAt(item.getLLC(),i,0);
+            item_master_table.setValueAt(item.getStringLSR(),i,0);
+            item_master_table.setValueAt(item.getLS(),i,0);
+            i++;
+        }
+    }
     private void add_item_master_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_item_master_buttonActionPerformed
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel) item_master_table.getModel();
@@ -1367,6 +1436,9 @@ public class MainFrame extends javax.swing.JFrame {
     private TwoDArray mps_model_list ;
     private Class [] mps_class_list ;
     private String[] mps_name_list  ;
-    
-    
+    private int db_type_count = 0;
+    private int db_period_count = 0;
+    private DBFunc db_client = new DBFunc();
+    private ArrayList<Material> db_material_list = new ArrayList<Material>();
+    private Class [] db_item_master_class_list ;
 }

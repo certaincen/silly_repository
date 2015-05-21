@@ -55,6 +55,15 @@ public class Material implements Comparable<Material>{
 	public int getLSR() {
 		return LSR;
 	}
+        public String getStringLSR(){
+		if (LSR == 1)
+			 return "LFL";
+		if (LSR == 2)
+			 return "FOQ";
+		if (LSR == 3)
+			 return "POQ";
+                return "Error";
+        }
 	public void setLSR(String lsr) {
 		if (lsr.equals("LFL"))
 			LSR = 1;
