@@ -52,7 +52,7 @@ public class CalculateMPS {
 				{
 					int curNR = curMPS.getSS() - curMPS.getPOH()[i];
 					curMPS.setNR(curNR, i);
-					calculatePorcByLSR(curMPS, curMPS.getLSR(), i);
+					calculatePorcByLSR(curMPS, curMPS.getLSR(), i, curNR);
 					//int curNR = curMPS.getSS() - curMPS.getPOHatIndex(i);
 					//curMPS.setNRatIndex(curNR, i);
 					//curMPS.setPORCatIndex(calculatePorcByLSR(curMPS, curMPS.getLSR(), i), i);
@@ -82,7 +82,7 @@ public class CalculateMPS {
 			
 			}
 			System.out.println();
-			for (int i=1;i<T;i++)
+			for (int i=0;i<T;i++)
 				generateNRToSon(s, i);
 			s.setIsCalFlag(1);
 			//outputMPS(curMPS);
@@ -94,9 +94,9 @@ public class CalculateMPS {
 		}
 		return;
 	}
-	private int calculatePorcByLSR(MPS curMPS, int lsr, int t) {
+	private int calculatePorcByLSR(MPS curMPS, int lsr, int t, int nr) {
 		//if (curMPS.getPOHatIndex(t)<0)
-		if (curMPS.getPOH()[t]<0)
+	//	if (curMPS.getPOH()[t]<0)
 		{
 			if (lsr == 1)
 			{
@@ -105,8 +105,8 @@ public class CalculateMPS {
 			}
 			if (lsr == 2)
 			{
-				int orderNum = curMPS.getLS();
-				curMPS.setPORC(curMPS.getLS(), t);
+				int addNum = nr / curMPS.getLS();
+				curMPS.setPORC(curMPS.getLS() + addNum*curMPS.getLS(), t);
 				//curMPS.setPORCatIndex(curMPS.getLS(), t);
 			}
 			if (lsr == 3)
@@ -116,10 +116,10 @@ public class CalculateMPS {
 				//curMPS.setPORCatIndex(curMPS.getNR()[t-index], t);
 			}
 		}
-		else
+	//	else
 		{
 			//curMPS.setPORCatIndex(0, t);
-			curMPS.setPORC(0, t);
+	//		curMPS.setPORC(0, t);
 		}
 
 		return 0;

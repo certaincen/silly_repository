@@ -77,18 +77,20 @@ public class TreeNode {
 	public void setInDegree(int inDegree) {
 		this.inDegree = inDegree;
 	}
-	public void writetoDB()
+	public void getAllUniqueValue(HashMap<String, MPS> mpsMap)
 	{
 		for (TreeNode i :this.son)
 		{
 			//System.out.println(i.toString());
-			DBFunc dbfunc = new DBFunc();
+		/*	DBFunc dbfunc = new DBFunc();
 			if (dbfunc.MPS_Insert(i.getMPSNode(), i.getMPSNode().getPAB().length) == -1)
 			{
 				dbfunc.MPS_Update(i.getMPSNode(), i.getMPSNode().getPAB().length);
 			}
 			i.MPSNode.show();
-			i.writetoDB();
+			*/
+			mpsMap.put(i.getMPSNode().getName(), i.getMPSNode());
+			i.getAllUniqueValue(mpsMap);
 		}
 	}
 
