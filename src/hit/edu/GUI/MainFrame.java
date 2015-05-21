@@ -70,11 +70,11 @@ public class MainFrame extends javax.swing.JFrame {
     }
     private synchronized void gen_inventory_table(){
 
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
             int type_count = (Integer)type_spinner.getModel().getValue();
             final int period_count = (Integer)period_spinner.getModel().getValue();
-            if(period_count != 13){
+            if(period_count != 13 || db_read){
                 inventory_table.setModel(new javax.swing.table.DefaultTableModel(
                 inventory_model_list.array,
                 inventory_name_list
@@ -91,8 +91,8 @@ public class MainFrame extends javax.swing.JFrame {
                 }
                 inventory_table.repaint();
             }
-            }
-        });
+//            }
+//        });
 
     }
     /**
@@ -209,14 +209,41 @@ public class MainFrame extends javax.swing.JFrame {
             }
     }
     /**
+     * 从数据库读出数据生成库存表
+     */
+    private synchronized void gen_db_inventory_table(){
+        //调用gen_inventory_table后填充数据即可
+        gen_inventory_table_col_array();
+        gen_inventory_table();
+        DefaultTableModel db_inventory_model = (DefaultTableModel) inventory_table.getModel();
+        
+        int i = 0;
+        for(Inventory inventory :db_inventory_list){
+            db_inventory_model.setValueAt(inventory.getName(), i, 0);
+            System.out.println(inventory.getName());
+            db_inventory_model.setValueAt(inventory.getOH(), i, 1);
+            db_inventory_model.setValueAt(inventory.getAL(), i, 2);
+            for(int j = 0; j < inventory.getSchedule().length; j++){
+                db_inventory_model.setValueAt(inventory.getSchedule()[j], i, j+3);
+            }
+            i++;
+        }
+        //db_inventory_model.setValueAt("CaoNiMa", 0, 0);
+        //inventory_table.repaint();
+        
+    }
+    /**
      * 从从数据库读取物料数量、周期数、以及其他全部数据
      */
     private void db_init_frame(){
+        //设定标志位
+        db_read = true;
         //首先，设定周期数
         db_type_count = db_client.Material_Num();
         db_period_count = db_client.Period_Query();
         type_spinner.getModel().setValue(db_type_count);
         period_spinner.getModel().setValue(db_period_count);
+        //然后，让跳转按钮disabled
         
         //然后读出物料主文件,并刷新
         db_material_list =  db_client.Material_QueryAll();
@@ -224,6 +251,9 @@ public class MainFrame extends javax.swing.JFrame {
         //然后录入BOM
         db_bom_list = db_client.BOM_Query();
         gen_db_bom_table();
+        //然后录入库存表
+        db_inventory_list = db_client.Inventory_QueryAll();
+        gen_db_inventory_table();
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -1480,4 +1510,7 @@ public class MainFrame extends javax.swing.JFrame {
     private Class [] db_item_master_class_list ;
     private ArrayList<BOM> db_bom_list = new ArrayList<BOM>();
     private Class [] db_bom_table_class_list;
+    private ArrayList<Inventory> db_inventory_list = new ArrayList<>();
+    private boolean db_read = false;
+    
 }
