@@ -11,6 +11,7 @@ import hit.edu.Entity.TreeNode;
 public class Test {
 
 	public static void main(String[] args) {
+                DBFunc db_client = new DBFunc();
 		Material m[] = new Material[6];
 		BOM bom_array[] = new BOM[8];
 		Inventory a,b,c,d,e,f;
@@ -21,6 +22,9 @@ public class Test {
 		m[3] = new Material("D", 1, 0, 5, 1, "FOQ", 200);
 		m[4] = new Material("E", 2, 0, 50, 3, "FOQ", 200);
 		m[5] = new Material("F", 2, 1, 105, 3, "FOQ", 200);
+                for(int i = 0; i < 6 ;i++){
+                    db_client.Material_Insert(m[i]);
+                }
 		bom_array[0] = new BOM("A", "C", 2);
 		bom_array[1] = new BOM("A", "D", 1);
 		bom_array[2] = new BOM("D", "E", 2);
@@ -29,7 +33,9 @@ public class Test {
 		bom_array[5] = new BOM("C", "F", 1);
 		bom_array[6] = new BOM("B", "E", 1);
 		bom_array[7] = new BOM("B", "C", 1);
-		
+		for(int i = 0 ; i< 8 ; i++){
+                    db_client.BOM_Insert(bom_array[i]);
+                }
 		//ArrayList<Integer> tmp = new ArrayList<Integer>(25);
 		int[] tmpA = new int[13];
 		int[] tmpB = new int[13];

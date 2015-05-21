@@ -226,6 +226,26 @@ public class DBFunc {
 			e.printStackTrace();
 		}
 	}
+        
+        public int Material_Num()
+        {
+            int count = 0;
+            sql = "select * from material;";
+            try 
+            {
+                    pstmt = conn.prepareStatement(sql);
+                    rs = pstmt.executeQuery();
+                    while(rs.next())
+                    {
+                        count++;
+                    }
+                    return count;
+            } 
+            catch (SQLException e) {
+                    e.printStackTrace();
+            }
+            return count;
+        }
 	
 	public void Inventory_Insert(Inventory i)
 	{
@@ -385,13 +405,12 @@ public class DBFunc {
 
 //	周期查询，ppt上13
 //	若要再建一个项目，则要对项目编写id
-	public int Period_Query(String product)
+	public int Period_Query()
 	{
-		sql = "select * from inventory where Name=?;";			
+		sql = "select * from inventory;";			
 		try
 		{
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, product);
 			rs = pstmt.executeQuery();
 			if(rs.next())
 			{	
