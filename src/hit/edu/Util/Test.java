@@ -11,7 +11,7 @@ import hit.edu.Entity.TreeNode;
 public class Test {
 
 	public static void main(String[] args) {
-		Material m[] = new Material[6];
+	/*	Material m[] = new Material[6];
 		BOM bom_array[] = new BOM[8];
 		Inventory a,b,c,d,e,f;
 		MPS mA, mB, mC, mD, mE, mF;
@@ -77,7 +77,7 @@ public class Test {
 		CreateTree creat = new CreateTree();
 		TreeNode root = creat.createTree(bom_array, m, inventoryMap);
 		
-		CalculateMPS cal = new CalculateMPS();
+		CalculateMPS cal = new CalculateMPS(13);
 		cal.calculateMPS(root);
 		root.writetoDB();
 		DBFunc dbfunc = new DBFunc();
@@ -92,7 +92,7 @@ public class Test {
 		mC.show();
 		mD.show();
 		mE.show();
-		mF.show();
+		mF.show();*/
 		
 
 	}
