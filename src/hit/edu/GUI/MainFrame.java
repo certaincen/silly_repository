@@ -135,7 +135,7 @@ public class MainFrame extends javax.swing.JFrame {
             
             int type_count = (Integer)type_spinner.getModel().getValue();
             period_count = (Integer)period_spinner.getModel().getValue();
-            if(period_count != 13 || db_read){
+            if(period_count != 13 || db_read || new_mpr){
                 mps_table.setModel(new javax.swing.table.DefaultTableModel(
                 mps_model_list.array,
                 mps_name_list
@@ -156,8 +156,31 @@ public class MainFrame extends javax.swing.JFrame {
     /**
      * 调用gen_mps_table生成模型，然后填充数据，首先要从数据库读出MPS的ArrayList
      */
-    private void gen_db_mps_table(){
-        
+    private synchronized void gen_db_mps_table(MPS mps_data){
+        System.out.println("Ri le gou");
+        DefaultTableModel dtm = (DefaultTableModel) mps_table.getModel();
+        for(int i = 0 ; i < db_period_count ; i++){
+            dtm.setValueAt(mps_data.getGR()[i], 0, i+1);
+        }
+        for(int i = 0 ; i < db_period_count ; i++){
+            dtm.setValueAt(mps_data.getSR()[i], 1, i+1);
+        }
+        for(int i = 0 ; i < db_period_count ; i++){
+            dtm.setValueAt(mps_data.getPOH()[i], 2, i+1);
+        }
+        for(int i = 0 ; i < db_period_count ; i++){
+            dtm.setValueAt(mps_data.getPAB()[i], 3, i+1);
+        }
+        for(int i = 0 ; i < db_period_count ; i++){
+            dtm.setValueAt(mps_data.getNR()[i], 4, i+1);
+        }
+        for(int i = 0 ; i < db_period_count ; i++){
+           dtm.setValueAt(mps_data.getPORC()[i], 5, i+1);
+        }
+        for(int i = 0 ; i < db_period_count ; i++){
+            dtm.setValueAt(mps_data.getPOR()[i], 6, i+1);
+        }
+        mps_table.setModel(dtm);
     }
     /**
      * 这个方法用来读取物料主文件中所有的物料编号用于最后显示结果时用户选择下拉框中显示
@@ -237,6 +260,7 @@ public class MainFrame extends javax.swing.JFrame {
     /**
      * 生成GR table，依据输入的不同期数生成不同的模型
      * p_count 期数
+     * t_count 独立需求项的数目
      */
     private void gen_gr_table(int t_count,int p_count){
         //首先生成模型
@@ -244,7 +268,7 @@ public class MainFrame extends javax.swing.JFrame {
             TwoDArray tmp2D = new TwoDArray(tmpArray);
             
             //int type_count = (Integer)type_spinner.getModel().getValue();
-            String [] nameArray = null;
+            String [] nameArray ;
             nameArray = new String[p_count+1];
             nameArray[0] = "P-No";
             nameArray[1] = "Past Due";
@@ -252,7 +276,7 @@ public class MainFrame extends javax.swing.JFrame {
                 nameArray[j] = (Integer.toString(j-1));
             }
 
-            Class [] classArray = null;
+            Class [] classArray ;
             classArray = new Class[p_count+1];
             classArray[0] = java.lang.String.class;
             for (int j = 1; j < p_count + 1; j ++){
@@ -278,8 +302,26 @@ public class MainFrame extends javax.swing.JFrame {
      * 从数据库中读出第一阶的物料的mps数据，生成GR表
      */
     private void gen_db_gr_table(){
-        gen_gr_table(db_type_count,db_period_count);
-        
+        ArrayList<MPS> item_list = db_client.MPS_InitGR(db_period_count);
+        gen_gr_table(item_list.size(),db_period_count);
+        int i = 0;
+        //写入数据
+        for (MPS item : item_list ){
+            gr_table.setValueAt(item.getName(), i, 0);
+            for(int j = 0; j < db_period_count  ;j++){
+                gr_table.setValueAt(item.getGR()[j], i, j+1);
+            }
+            i++;
+        }
+    }
+    /**
+     * 当查看过去的结果时，禁用一些按钮
+     */
+    private void disable_button(){
+        fin_bom_button.setEnabled(false);
+        fin_gr_button.setEnabled(false);
+        fin_inventory_button.setEnabled(false);
+        fin_item_master_button.setEnabled(false);
     }
     /**
      * 从从数据库读取物料数量、周期数、以及其他全部数据
@@ -294,8 +336,7 @@ public class MainFrame extends javax.swing.JFrame {
         period_spinner.getModel().setValue(db_period_count);
         //然后，让跳转按钮disabled
         //**************************
-        
-        
+        disable_button();
         //然后读出物料主文件,并刷新
         db_material_list =  db_client.Material_QueryAll();
         gen_db_material_table(db_material_list);
@@ -307,6 +348,12 @@ public class MainFrame extends javax.swing.JFrame {
         gen_db_inventory_table();
         //然后读出GR
         gen_db_gr_table();
+        //然后读出全部的MPS数据
+        //首先要初始化下拉列表
+        get_material_list();
+        //然后就是按钮的actionListener的事情了，还是要写入数据库之后再读,在ActionListener中调用gen_db_mps_table，传入一条mps数据
+        //当然还要生成一个MPS的数据模型
+        gen_mps_table();
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -397,8 +444,6 @@ public class MainFrame extends javax.swing.JFrame {
         st_text = new javax.swing.JTextField();
         jLabel29 = new javax.swing.JLabel();
         ss_text = new javax.swing.JTextField();
-        jLabel30 = new javax.swing.JLabel();
-        lfl_text = new javax.swing.JTextField();
         home_button = new javax.swing.JButton();
         quit_button = new javax.swing.JButton();
 
@@ -631,12 +676,12 @@ public class MainFrame extends javax.swing.JFrame {
 
         item_master_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"A",  new Integer(1),  new Integer(0),  new Integer(25),  new Integer(0), "FOQ",  new Integer(1)},
-                {"B",  new Integer(1),  new Integer(0),  new Integer(20),  new Integer(0), "FOQ",  new Integer(1)},
+                {"A",  new Integer(1),  new Integer(0),  new Integer(25),  new Integer(0), "LFL",  new Integer(1)},
+                {"B",  new Integer(1),  new Integer(0),  new Integer(20),  new Integer(0), "LFL",  new Integer(1)},
                 {"C",  new Integer(1),  new Integer(0),  new Integer(5),  new Integer(2), "FOQ",  new Integer(500)},
                 {"D",  new Integer(1),  new Integer(0),  new Integer(5),  new Integer(1), "FOQ",  new Integer(200)},
-                {"E",  new Integer(2),  new Integer(0),  new Integer(50),  new Integer(3), "FOQ",  new Integer(3)},
-                {"F",  new Integer(2),  new Integer(1),  new Integer(100),  new Integer(3), "FOQ",  new Integer(2)}
+                {"E",  new Integer(2),  new Integer(0),  new Integer(50),  new Integer(3), "FOQ",  new Integer(200)},
+                {"F",  new Integer(2),  new Integer(1),  new Integer(100),  new Integer(3), "FOQ",  new Integer(200)}
             },
             new String [] {
                 "P-No.", "LT", "ST", "SS", "LLC", "LSR", "LS"
@@ -735,7 +780,7 @@ public class MainFrame extends javax.swing.JFrame {
                 {"C", "E",  new Integer(1)},
                 {"C", "F",  new Integer(1)},
                 {"B", "E",  new Integer(1)},
-                {"B", "C", null}
+                {"B", "C",  new Integer(1)}
             },
             new String [] {
                 "Parent", "Comp", "Q-P"
@@ -915,9 +960,7 @@ public class MainFrame extends javax.swing.JFrame {
         gr_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {"A",  new Integer(0),  new Integer(80),  new Integer(50),  new Integer(100),  new Integer(60),  new Integer(100),  new Integer(70),  new Integer(100),  new Integer(60),  new Integer(100),  new Integer(50),  new Integer(100),  new Integer(50)},
-                {"B",  new Integer(0),  new Integer(100),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0)},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null}
+                {"B",  new Integer(0),  new Integer(100),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0),  new Integer(0)}
             },
             new String [] {
                 "P-No", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"
@@ -1076,8 +1119,6 @@ public class MainFrame extends javax.swing.JFrame {
 
         jLabel29.setText("SS：");
 
-        jLabel30.setText("LFL：");
-
         home_button.setText("返回首页");
         home_button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1103,9 +1144,9 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addGap(45, 45, 45)
                 .addComponent(jLabel23)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 81, Short.MAX_VALUE)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(91, 91, 91)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(64, 64, 64)
                 .addComponent(get_mpr_result_button)
                 .addGap(131, 131, 131))
             .addGroup(jPanel7Layout.createSequentialGroup()
@@ -1120,32 +1161,28 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(jLabel24)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(oh_text, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(jLabel26)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(al_text, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel27)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(lt_text, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(45, 45, 45)
                         .addComponent(jLabel28)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(st_text, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addGap(31, 31, 31)
                         .addComponent(jLabel29)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(ss_text, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel30)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lfl_text, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(ss_text, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addGap(208, 208, 208)
                         .addComponent(home_button)
                         .addGap(127, 127, 127)
                         .addComponent(quit_button)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(163, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1170,9 +1207,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(jLabel28)
                     .addComponent(st_text, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel29)
-                    .addComponent(ss_text, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel30)
-                    .addComponent(lfl_text, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(ss_text, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(23, 23, 23)
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(60, 60, 60)
@@ -1210,6 +1245,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void new_mpr_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_new_mpr_buttonActionPerformed
         // TODO add your handling code here:
+       new_mpr = true;
        jTabbedPane1.setSelectedIndex(1);
        deactive_tab(1);
     }//GEN-LAST:event_new_mpr_buttonActionPerformed
@@ -1378,12 +1414,127 @@ public class MainFrame extends javax.swing.JFrame {
             model.removeRow(gr_table.getSelectedRow());    //删除选中的那一行
         }   
     }//GEN-LAST:event_del_gr_buttonActionPerformed
+    /**
+     * 从物料主文件表中读出数据，按照Material的格式组织
+     * @return 
+     */
+    private ArrayList<Material> read_item_master_table(){
+        DefaultTableModel dtm = (DefaultTableModel) item_master_table.getModel();
+        ArrayList<Material> m_list = new ArrayList<>();
+        int type_count = (Integer)type_spinner.getModel().getValue();
+        for(int i = 0 ; i < type_count; i++){
+            Material tmp = new Material((String)dtm.getValueAt(i, 0), (Integer)dtm.getValueAt(i, 1), (Integer)dtm.getValueAt(i, 2), (Integer)dtm.getValueAt(i, 3),
+                    (Integer) dtm.getValueAt(i, 4),(String) dtm.getValueAt(i, 5),(Integer) dtm.getValueAt(i, 6));
+            m_list.add(tmp);
+        }
+        return m_list;
+    }
+    /**
+     * 从BOM表中读数据
+     * @return 
+     */
+    private ArrayList<BOM> read_bom_table(){
+        DefaultTableModel dtm = (DefaultTableModel) bom_table.getModel();
+        ArrayList<BOM> b_list = new ArrayList<>();
+        int bom_count = dtm.getRowCount();
+        for(int i = 0 ; i < bom_count; i++){
+            BOM tmp = new BOM((String)dtm.getValueAt(i, 0), (String)dtm.getValueAt(i, 1), (Integer)dtm.getValueAt(i, 2));
+            b_list.add(tmp);
+        }
+        return b_list;
+    }
+    /**
+     * 从库存表中读数据
+     * @return 
+     */
+    private ArrayList<Inventory> read_inventory_table(){
+        DefaultTableModel dtm = (DefaultTableModel) inventory_table.getModel();
+        ArrayList<Inventory> i_list = new ArrayList<>();
+        int type_count = (Integer)type_spinner.getModel().getValue();
+        int col_count = dtm.getColumnCount();
+        for(int i = 0 ; i < type_count; i++){
+            ArrayList<Integer> tmp_al = new ArrayList();
+            for(int j = 3; j < col_count ; j ++){
+                tmp_al.add((Integer)dtm.getValueAt(i, j));
+            }
+            int [] sc = new int[tmp_al.size()];
+            for(int k = 0; k< tmp_al.size(); k++){
+                sc[k] = tmp_al.get(k);
+            }
+            Inventory tmp = new Inventory((String)dtm.getValueAt(i, 0), (Integer)dtm.getValueAt(i, 1), (Integer)dtm.getValueAt(i, 2), sc);
+            i_list.add(tmp);
+        }
+        return i_list;
+    }
+    /**
+     * 从GR表里读数据,返回MPS列表
+     * 返回ArrayList<MPS>
+     * @return 
+     */
+    private ArrayList<MPS> read_gr_table(){
+        DefaultTableModel dtm = (DefaultTableModel) gr_table.getModel();
+        ArrayList<MPS> gr_list = new ArrayList<>();
+        int period_count = (Integer) period_spinner.getModel().getValue();
+        int row_count = dtm.getRowCount();
+        int col_count = dtm.getColumnCount();
+        for(int i = 0 ; i < row_count; i++){
+            ArrayList<Integer> tmp_al = new ArrayList();
+            for(int j = 1; j < col_count ; j ++){
+                tmp_al.add((Integer)dtm.getValueAt(i, j));
+            }
+            int [] sc = new int[tmp_al.size()];
+            for(int k = 0; k< tmp_al.size(); k++){
+                sc[k] = tmp_al.get(k);
+            }
+            MPS tmp = new MPS((String)dtm.getValueAt(i, 0), period_count);
+            tmp.setGR(sc);
+            gr_list.add(tmp);
+        }
+        return gr_list;
+    }    
+    /**
+     * 读出界面中的全部数据进行计算
+     */
+   private void caculate_and_store(){
+       //首先，读出界面中的数据存放到ArrayList中
+       int period_count = (Integer) period_spinner.getModel().getValue();
+        ArrayList<Material> aM = read_item_master_table();
+        ArrayList<BOM> aB = read_bom_table();
+        ArrayList<Inventory> aI = read_inventory_table();
+        ArrayList<MPS> aG = read_gr_table();
 
+       //这里只添加MPS? 滚蛋吧，太危险了
+       for( MPS mpsNode : aG){
+           db_client.MPS_Insert(mpsNode, mpsNode.getGR().length);
+       }
+       //然后，删除数据库中已有的数据
+       db_client.DeleteAllTable();
+       CoreCalculate core = new CoreCalculate(aM, aB, aI, period_count); 
+       ArrayList<MPS> result = core.calculate();
+       for ( MPS re : result){
+           db_client.MPS_Insert(re, re.getGR().length);
+       }       
+       //然后，把读出的数据一条条添加到数据库里
+       //添加物料主文件
+       for (Material m : aM){
+           db_client.Material_Insert(m);
+       }
+       for (BOM b : aB){
+           db_client.BOM_Insert(b);
+       }
+       for(Inventory in : aI){
+           db_client.Inventory_Insert(in);
+       }       
+
+   } 
+    
     private void fin_gr_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fin_gr_buttonActionPerformed
         // TODO add your handling code here:
         int now_index = jTabbedPane1.getSelectedIndex();
-        jTabbedPane1.setSelectedIndex(now_index+1);
+        caculate_and_store();
         gen_mps_table();
+        jTabbedPane1.setSelectedIndex(now_index+1);
+        //gen_mps_table();
         deactive_tab(now_index+1);
     }//GEN-LAST:event_fin_gr_buttonActionPerformed
 
@@ -1392,6 +1543,15 @@ public class MainFrame extends javax.swing.JFrame {
         //取下拉菜单的数据填入
         String tmpstr = (String)jComboBox1.getModel().getSelectedItem();
         type_text.setText(tmpstr);
+        MPS tmp_mps = db_client.MPS_Query(tmpstr);
+        System.out.println(tmp_mps.getGR());
+        oh_text.setText((Integer.toString(tmp_mps.getOH())));
+        al_text.setText((Integer.toString(tmp_mps.getAL())));
+        lt_text.setText((Integer.toString(tmp_mps.getLT())));
+        st_text.setText((Integer.toString(tmp_mps.getST())));
+        ss_text.setText((Integer.toString(tmp_mps.getSS())));
+        gen_db_mps_table(tmp_mps);
+        
     }//GEN-LAST:event_get_mpr_result_buttonActionPerformed
 
     private void type_textActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_type_textActionPerformed
@@ -1508,7 +1668,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -1535,7 +1694,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField lfl_text;
     private javax.swing.JTextField lt_text;
     private javax.swing.JTable mps_table;
     private javax.swing.JButton new_mpr_button;
@@ -1564,5 +1722,7 @@ public class MainFrame extends javax.swing.JFrame {
     private Class [] db_gr_table_class_list;
     private ArrayList<Inventory> db_inventory_list = new ArrayList<>();
     private boolean db_read = false;
+    private boolean new_mpr = false;
+    private ArrayList<MPS> db_mps_list = new ArrayList<>();
     
 }

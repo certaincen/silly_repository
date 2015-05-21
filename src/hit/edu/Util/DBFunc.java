@@ -442,7 +442,40 @@ public class DBFunc {
 		}
 		return 0;
 	}
-
+        /**
+         * 从数据库中获取独立需求项目
+         * @param p
+         * @return 
+         */
+        public ArrayList<MPS> MPS_InitGR(int p)
+	{
+		ArrayList<MPS> mps_list = new ArrayList<MPS>();
+		sql = "select * from mps natural join material where LLC = ? order by Name,Period asc;";//按照周期period升序排列
+		try 
+		{
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, 0);
+			rs = pstmt.executeQuery();
+			while(rs.next())
+			{
+				MPS mps = new MPS();
+				mps.setName(rs.getString("Name"));
+				for(int index=0;index<p;index++)
+				{
+					mps.setGR(rs.getInt("GR"), index);
+					if(index+1 != p)
+						rs.next();
+				}
+				mps_list.add(mps);
+			}
+			return mps_list;
+		}
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		return null;
+	}
 //	p为周期数
 	public int MPS_Insert(MPS mps,int p)
 	{

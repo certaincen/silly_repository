@@ -514,8 +514,8 @@
                           <Data value="3"/>
                         </Column>
                         <Column editable="true" title="LSR" type="java.lang.String">
-                          <Data value="FOQ"/>
-                          <Data value="FOQ"/>
+                          <Data value="LFL"/>
+                          <Data value="LFL"/>
                           <Data value="FOQ"/>
                           <Data value="FOQ"/>
                           <Data value="FOQ"/>
@@ -526,8 +526,8 @@
                           <Data value="1"/>
                           <Data value="500"/>
                           <Data value="200"/>
-                          <Data value="3"/>
-                          <Data value="2"/>
+                          <Data value="200"/>
+                          <Data value="200"/>
                         </Column>
                       </Table>
                     </Property>
@@ -725,7 +725,7 @@
                           <Data value="1"/>
                           <Data value="1"/>
                           <Data value="1"/>
-                          <Data value="null"/>
+                          <Data value="1"/>
                         </Column>
                       </Table>
                     </Property>
@@ -1180,90 +1180,62 @@
                 <Component class="javax.swing.JTable" name="gr_table">
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                      <Table columnCount="14" rowCount="4">
+                      <Table columnCount="14" rowCount="2">
                         <Column editable="true" title="P-No" type="java.lang.String">
                           <Data value="A"/>
                           <Data value="B"/>
-                          <Data value="null"/>
-                          <Data value="null"/>
                         </Column>
                         <Column editable="true" title="0" type="java.lang.Integer">
                           <Data value="0"/>
                           <Data value="0"/>
-                          <Data value="null"/>
-                          <Data value="null"/>
                         </Column>
                         <Column editable="true" title="1" type="java.lang.Integer">
                           <Data value="80"/>
                           <Data value="100"/>
-                          <Data value="null"/>
-                          <Data value="null"/>
                         </Column>
                         <Column editable="true" title="2" type="java.lang.Integer">
                           <Data value="50"/>
                           <Data value="0"/>
-                          <Data value="null"/>
-                          <Data value="null"/>
                         </Column>
                         <Column editable="true" title="3" type="java.lang.Integer">
                           <Data value="100"/>
                           <Data value="0"/>
-                          <Data value="null"/>
-                          <Data value="null"/>
                         </Column>
                         <Column editable="true" title="4" type="java.lang.Integer">
                           <Data value="60"/>
                           <Data value="0"/>
-                          <Data value="null"/>
-                          <Data value="null"/>
                         </Column>
                         <Column editable="true" title="5" type="java.lang.Integer">
                           <Data value="100"/>
                           <Data value="0"/>
-                          <Data value="null"/>
-                          <Data value="null"/>
                         </Column>
                         <Column editable="true" title="6" type="java.lang.Integer">
                           <Data value="70"/>
                           <Data value="0"/>
-                          <Data value="null"/>
-                          <Data value="null"/>
                         </Column>
                         <Column editable="true" title="7" type="java.lang.Integer">
                           <Data value="100"/>
                           <Data value="0"/>
-                          <Data value="null"/>
-                          <Data value="null"/>
                         </Column>
                         <Column editable="true" title="8" type="java.lang.Integer">
                           <Data value="60"/>
                           <Data value="0"/>
-                          <Data value="null"/>
-                          <Data value="null"/>
                         </Column>
                         <Column editable="true" title="9" type="java.lang.Integer">
                           <Data value="100"/>
                           <Data value="0"/>
-                          <Data value="null"/>
-                          <Data value="null"/>
                         </Column>
                         <Column editable="true" title="10" type="java.lang.Integer">
                           <Data value="50"/>
                           <Data value="0"/>
-                          <Data value="null"/>
-                          <Data value="null"/>
                         </Column>
                         <Column editable="true" title="11" type="java.lang.Integer">
                           <Data value="100"/>
                           <Data value="0"/>
-                          <Data value="null"/>
-                          <Data value="null"/>
                         </Column>
                         <Column editable="true" title="12" type="java.lang.Integer">
                           <Data value="50"/>
                           <Data value="0"/>
-                          <Data value="null"/>
-                          <Data value="null"/>
                         </Column>
                       </Table>
                     </Property>
@@ -1404,9 +1376,9 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
                       <Component id="jLabel23" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="81" max="32767" attributes="0"/>
-                      <Component id="jComboBox1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="91" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="jComboBox1" min="-2" pref="89" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="64" max="-2" attributes="0"/>
                       <Component id="get_mpr_result_button" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="131" max="-2" attributes="0"/>
                   </Group>
@@ -1423,26 +1395,22 @@
                               <Component id="jLabel24" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="oh_text" min="-2" pref="47" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                               <Component id="jLabel26" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="al_text" min="-2" pref="44" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="jLabel27" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="lt_text" min="-2" pref="44" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
                               <Component id="jLabel28" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="st_text" min="-2" pref="52" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
                               <Component id="jLabel29" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="ss_text" min="-2" pref="53" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="jLabel30" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="lfl_text" min="-2" pref="63" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" pref="208" max="-2" attributes="0"/>
@@ -1451,7 +1419,7 @@
                               <Component id="quit_button" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace pref="163" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -1481,8 +1449,6 @@
                           <Component id="st_text" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel29" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="ss_text" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel30" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="lfl_text" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
                       <Component id="jScrollPane5" min="-2" pref="141" max="-2" attributes="0"/>
@@ -1789,13 +1755,6 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="ss_text">
-            </Component>
-            <Component class="javax.swing.JLabel" name="jLabel30">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="LFL&#xff1a;"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JTextField" name="lfl_text">
             </Component>
             <Component class="javax.swing.JButton" name="home_button">
               <Properties>
