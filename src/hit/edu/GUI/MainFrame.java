@@ -1420,7 +1420,7 @@ public class MainFrame extends javax.swing.JFrame {
      */
     private ArrayList<Material> read_item_master_table(){
         DefaultTableModel dtm = (DefaultTableModel) item_master_table.getModel();
-        ArrayList<Material> m_list = new ArrayList<>();
+        ArrayList<Material> m_list = new ArrayList<Material>();
         int type_count = (Integer)type_spinner.getModel().getValue();
         for(int i = 0 ; i < type_count; i++){
             Material tmp = new Material((String)dtm.getValueAt(i, 0), (Integer)dtm.getValueAt(i, 1), (Integer)dtm.getValueAt(i, 2), (Integer)dtm.getValueAt(i, 3),
@@ -1435,7 +1435,7 @@ public class MainFrame extends javax.swing.JFrame {
      */
     private ArrayList<BOM> read_bom_table(){
         DefaultTableModel dtm = (DefaultTableModel) bom_table.getModel();
-        ArrayList<BOM> b_list = new ArrayList<>();
+        ArrayList<BOM> b_list = new ArrayList<BOM>();
         int bom_count = dtm.getRowCount();
         for(int i = 0 ; i < bom_count; i++){
             BOM tmp = new BOM((String)dtm.getValueAt(i, 0), (String)dtm.getValueAt(i, 1), (Integer)dtm.getValueAt(i, 2));
@@ -1449,7 +1449,7 @@ public class MainFrame extends javax.swing.JFrame {
      */
     private ArrayList<Inventory> read_inventory_table(){
         DefaultTableModel dtm = (DefaultTableModel) inventory_table.getModel();
-        ArrayList<Inventory> i_list = new ArrayList<>();
+        ArrayList<Inventory> i_list = new ArrayList<Inventory>();
         int type_count = (Integer)type_spinner.getModel().getValue();
         int col_count = dtm.getColumnCount();
         for(int i = 0 ; i < type_count; i++){
@@ -1473,7 +1473,7 @@ public class MainFrame extends javax.swing.JFrame {
      */
     private ArrayList<MPS> read_gr_table(){
         DefaultTableModel dtm = (DefaultTableModel) gr_table.getModel();
-        ArrayList<MPS> gr_list = new ArrayList<>();
+        ArrayList<MPS> gr_list = new ArrayList<MPS>();
         int period_count = (Integer) period_spinner.getModel().getValue();
         int row_count = dtm.getRowCount();
         int col_count = dtm.getColumnCount();
@@ -1729,9 +1729,9 @@ public class MainFrame extends javax.swing.JFrame {
     private ArrayList<BOM> db_bom_list = new ArrayList<BOM>();
     private Class [] db_bom_table_class_list;
     private Class [] db_gr_table_class_list;
-    private ArrayList<Inventory> db_inventory_list = new ArrayList<>();
+    private ArrayList<Inventory> db_inventory_list = new ArrayList<Inventory>();
     private boolean db_read = false;
     private boolean new_mpr = false;
-    private ArrayList<MPS> db_mps_list = new ArrayList<>();
+    private ArrayList<MPS> db_mps_list = new ArrayList<MPS>();
     
 }
