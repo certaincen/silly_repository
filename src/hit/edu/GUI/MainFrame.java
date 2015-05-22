@@ -29,7 +29,17 @@ public class MainFrame extends javax.swing.JFrame {
     public MainFrame() {
         //gen_inventory_table_col_array();  //生成表格的数据
         initComponents();
+        deactive_tab(0);
         this.setLocationRelativeTo(null);   //设置为居中
+    }
+    /**
+     * 让全部标签可用
+     */
+    private void active_all_tab(){
+        int size = jTabbedPane1.getComponentCount();
+        for (int k = 0 ; k < size ; k++){
+            jTabbedPane1.setEnabledAt(k,true);
+        }
     }
     //把除了自己的Tab全部disable
     private void deactive_tab(int i){
@@ -337,6 +347,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void db_init_frame(){
         //设定标志位
         db_read = true;
+        active_all_tab();
         //首先，设定周期数
         db_type_count = db_client.Material_Num();
         db_period_count = db_client.Period_Query();
@@ -1333,7 +1344,7 @@ public class MainFrame extends javax.swing.JFrame {
 
             TwoDArray tmp2D = new TwoDArray(tmpArray);
 
-            String [] nameArray = null;
+            String [] nameArray ;
             nameArray = new String[7];
             nameArray[0] = "P-No";
             nameArray[1] = "LT";
@@ -1343,7 +1354,7 @@ public class MainFrame extends javax.swing.JFrame {
             nameArray[5] = "LSR";
             nameArray[6] = "LS";
 
-            Class [] classArray = null;
+            Class [] classArray ;
             classArray = new Class[7];
             classArray[0] = java.lang.String.class;
             classArray[1] = java.lang.Integer.class;
@@ -1633,6 +1644,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void home_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_home_buttonActionPerformed
         // TODO add your handling code here:
+        db_init_frame();
         jTabbedPane1.setSelectedIndex(0);
         
     }//GEN-LAST:event_home_buttonActionPerformed
